@@ -21,7 +21,7 @@ y aprender de manera divertida, lo cual es esencial para captar la atención y e
 de los niños, especialmente aquellos con autismo
 
 ## Colores:
-![colores](./assets/colors.png "Title")
+![colores](./src/assets/colors.png "Title")
 
 - **Verde menta**: Este tono suave es refrescante y se relaciona con el crecimiento y la
 calma
@@ -42,4 +42,4 @@ aprendizaje de los niños autistas, en nuestro imagotipo este elemento se relaci
 colores antes mencionados para ayudar a proporcionarnos la identidad con la que nos
 identificamos.
 
-![logo](./assets/logo.png "Title")
+![logo](./src/assets/logo.png "Title")
