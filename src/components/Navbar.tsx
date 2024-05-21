@@ -1,27 +1,27 @@
 import {
-  IconButton,
   Box,
+  BoxProps,
   CloseButton,
-  Flex,
-  Icon,
-    Drawer,
+  Drawer,
   DrawerContent,
+  Flex,
+  FlexProps,
+  Icon,
+  IconButton,
+  Link,
   Text,
   useDisclosure,
-  BoxProps,
-  FlexProps,
-  Link,
 } from '@chakra-ui/react';
-import {
-  FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
-  FiMenu,
-} from 'react-icons/fi';
-import { IconType } from 'react-icons';
 import { ReactNode, ReactText } from 'react';
+import { IconType } from 'react-icons';
+import {
+  FiCompass,
+  FiHome,
+  FiMenu,
+  FiSettings,
+  FiStar,
+  FiTrendingUp,
+} from 'react-icons/fi';
 
 interface LinkItemProps {
   name: string;
@@ -31,7 +31,7 @@ interface LinkItemProps {
 const LinkItems: Array<LinkItemProps> = [
   { name: 'Aprender a contar', icon: FiHome, href: 'aprenderacontar' },
   { name: 'Asociar Numeros', icon: FiTrendingUp, href: 'asociarnumeros' },
-  { name: 'Puzzles', icon: FiStar, href: 'puzzles'},
+  { name: 'Puzzles', icon: FiStar, href: 'puzzles' },
   { name: 'Puntaje', icon: FiCompass, href: 'puntaje' },
   { name: 'Bitacora', icon: FiSettings, href: 'bitacora' },
 ];
@@ -81,7 +81,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       {...rest}>
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Númeraludica
+          Numeralúdica
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
@@ -153,7 +153,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       />
 
       <Text fontSize="2xl" ml="8" fontFamily="monospace" fontWeight="bold">
-        Númeraludica
+        Numeralúdica
       </Text>
     </Flex>
   );
