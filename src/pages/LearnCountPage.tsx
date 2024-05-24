@@ -1,12 +1,5 @@
-import Navbar from '../components/Navbar';
-import Board from '../components/coutingfruits/Board';
+import LevelOne from "../components/LearnCount/LevelOne";
 
 export default function LearnCountPage() {
-
-    return (
-        <Navbar>
-            <Board />
-        </Navbar>
-    )
+    return <LevelOne />
 }
-
