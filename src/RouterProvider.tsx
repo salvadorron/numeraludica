@@ -1,35 +1,25 @@
 import { createBrowserRouter, RouterProvider as RouterBrowser } from 'react-router-dom'
-import AsociateNumbersPage from './pages/AsociateNumbersPage'
-import BinnaclePage from './pages/BinnaclePage'
-import Homepage from './pages/Homepage'
+import HelpPage from './pages/HelpPage'
+import HomePage from './pages/HomePage'
 import LearnCountPage from './pages/LearnCountPage'
-import PuzzlesPage from './pages/PuzzlesPage'
 import ScorePage from './pages/ScorePage'
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <Homepage />
+        element: <HomePage />
     },
     {
         path: '/aprenderacontar',
         element: <LearnCountPage />
     },
     {
-        path: '/asociarnumeros',
-        element: <AsociateNumbersPage />
-    },
-    {
-        path: '/puzzles',
-        element: <PuzzlesPage />
-    },
-    {
         path: '/puntaje',
         element: <ScorePage />
     },
     {
-        path: '/bitacora',
-        element: <BinnaclePage />
+        path: '/ayuda',
+        element: <HelpPage />
     }
 ])
 

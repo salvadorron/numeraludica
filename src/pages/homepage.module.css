@@ -1,0 +1,12 @@
+.board {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #82c8a6;
+    padding-top: 80px;
+}
+
+.image {
+    width: 800px;
+}

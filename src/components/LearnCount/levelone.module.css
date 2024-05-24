@@ -1,0 +1,63 @@
+.mainframe {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 100vh;
+}
+
+.destination {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(6, 150px);
+    grid-template-rows: repeat(5, 150px);
+    place-content: center;
+}
+
+.table_question {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.options {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.option {
+    display: flex;
+    flex-direction: column;
+    padding: 4px;
+    justify-content: space-between;
+    align-items: flex;
+    border: 2px dotted #7a7a7a;
+    width: 250px;
+}
+
+.field {
+    font-size: 72px;
+    text-align: center;
+    border-bottom: 2px solid black;
+    outline: none;
+}
+
+.marker {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    border: 1px solid #090909;
+}
+
+.marker_title {
+    text-align: center;
+}
+
+.destination_item {
+    border: 1px solid #ccc;
+}
