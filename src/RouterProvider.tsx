@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider as RouterBrowser } from 'react-router-dom'
 import HelpPage from './pages/HelpPage'
-import HomePage from './pages/HomePage'
+import HomePage from './pages/Homepage'
 import LearnCountPage from './pages/LearnCountPage'
 import ScorePage from './pages/ScorePage'
 

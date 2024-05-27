@@ -5,8 +5,16 @@
     min-height: 100vh;
 }
 
-.destination {
+.destination_wrapper {
+    display: flex;
     padding: 10px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.destination {
     display: grid;
     grid-template-columns: repeat(6, 150px);
     grid-template-rows: repeat(5, 150px);
@@ -32,10 +40,10 @@
     display: flex;
     flex-direction: column;
     padding: 4px;
-    justify-content: space-between;
-    align-items: flex;
+    gap: 10px;
     border: 2px dotted #7a7a7a;
     width: 250px;
+    height: 150px;
 }
 
 .field {
@@ -60,4 +68,77 @@
 
 .destination_item {
     border: 1px solid #ccc;
+}
+
+.source {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 5px;
+    flex-direction: column;
+    align-items: center;
+    height: 600px;
+    width: 80px;
+    border: 1px solid #f0e4e4;
+    border-radius: 5px;
+}
+
+.source_item {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    padding: 10px;
+    width: 40px;
+    border-radius: 8px;
+    border: 1px solid #f5f5f5;
+    box-shadow: 0px 0px 2px 1px #dfdfdf;
+}
+
+.bounce {
+    outline: 0;
+    border-color: red;
+    animation-name: bounce;
+    animation-duration: .5s;
+    animation-delay: 0.25s;
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateX(0px);
+        timing-function: ease-in;
+    }
+
+    37% {
+        transform: translateX(5px);
+        timing-function: ease-out;
+    }
+
+    55% {
+        transform: translateX(-5px);
+        timing-function: ease-in;
+    }
+
+    73% {
+        transform: translateX(4px);
+        timing-function: ease-out;
+    }
+
+    82% {
+        transform: translateX(-4px);
+        timing-function: ease-in;
+    }
+
+    91% {
+        transform: translateX(2px);
+        timing-function: ease-out;
+    }
+
+    96% {
+        transform: translateX(-2px);
+        timing-function: ease-in;
+    }
+
+    100% {
+        transform: translateX(0px);
+        timing-function: ease-in;
+    }
 }
