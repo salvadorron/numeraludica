@@ -1,11 +1,14 @@
 import { ChakraProvider } from "@chakra-ui/react"
+import ModalProvider from "./ModalProvider"
 import RouterProvider from "./RouterProvider"
 import './index.css'
 function App() {
 
   return (
     <ChakraProvider>
-      <RouterProvider />
+      <ModalProvider>
+        <RouterProvider />
+      </ModalProvider>
     </ChakraProvider>
   )
 }
