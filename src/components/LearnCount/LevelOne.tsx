@@ -2,6 +2,7 @@ import { Image } from '@chakra-ui/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, DropResult, Droppable, ResponderProvided } from 'react-beautiful-dnd';
+import { useNavigate } from 'react-router-dom';
 import useModal from '../../ctx';
 import styles from './levelone.module.css';
 
@@ -47,7 +48,9 @@ type CardColor = {
 
 export default function LevelOne() {
 
-    const { onOpen } = useModal()
+    const modal = useModal()
+
+    const router = useNavigate()
 
     const [itemList, setItemList] = useState<Poke[]>([])
 
@@ -86,6 +89,10 @@ export default function LevelOne() {
 
     async function initialBoard() {
 
+        setLife({
+            ...life,
+            current: 0
+        })
         const initalRandomId1 = Math.floor((Math.random() * 100) + 1);
         const initalRandomId2 = Math.floor((Math.random() * 100) + 1);
         const initalRandomId3 = Math.floor((Math.random() * 100) + 1);
@@ -196,7 +203,22 @@ export default function LevelOne() {
         const nextTry = life.current + 1
         setLife({ ...life, current: nextTry })
         if (nextTry === life.limit) {
-            onOpen()
+            modal({
+                title: "Has perdido",
+                description: "Has alcanzado el maximo de intentos posibles",
+                button1: {
+                    text: "Reintentar",
+                    onClick() {
+                        return initialGame()
+                    }
+                },
+                button2: {
+                    text: "Volver al menu principal",
+                    onClick() {
+                        return router('/')
+                    },
+                }
+            })
         }
     }
 

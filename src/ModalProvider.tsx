@@ -1,31 +1,43 @@
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, useDisclosure } from "@chakra-ui/react";
-import { createContext, useRef } from "react";
+import { createContext, useRef, useState } from "react";
 
-export const ModalContext = createContext<{
-    isOpen: boolean,
-    onOpen: () => void,
-    onClose: () => void,
-    onToggle: () => void,
-    isControlled: boolean,
-    getButtonProps: (props?: any) => any,
-    getDisclosureProps: (props?: any) => any
-}>({
-    isOpen: false,
-    onOpen: () => null,
-    onClose: () => null,
-    onToggle: () => null,
-    isControlled: false,
-    getButtonProps: () => false,
-    getDisclosureProps: () => false
-})
+type ModalOptions = {
+    title?: string,
+    description?: string,
+    button1?: {
+        text?: string,
+        onClick?: () => void
+    },
+    button2?: {
+        text?: string,
+        onClick?: () => void
+    }
+}
+
+
+type ModalFunction = {
+    openModal: (modalOptions?: ModalOptions) => void
+}
+
+export const ModalContext = createContext<ModalFunction>({ openModal: () => null })
 
 export default function ModalProvider({ children }: { children: React.ReactElement }) {
 
+    const [modal, setModal] = useState<ModalOptions | undefined>()
+
     const disclosure = useDisclosure()
+
+    function openModal(modalOptions?: ModalOptions) {
+        setModal({
+            ...modalOptions
+        })
+        return disclosure.onOpen()
+    }
+
     const ref = useRef<HTMLButtonElement>(null)
 
     return (
-        <ModalContext.Provider value={disclosure} >
+        <ModalContext.Provider value={{ openModal }}>
             <AlertDialog
                 motionPreset='slideInTop'
                 leastDestructiveRef={ref}
@@ -38,16 +50,22 @@ export default function ModalProvider({ children }: { children: React.ReactEleme
                 <AlertDialogOverlay />
 
                 <AlertDialogContent>
-                    <AlertDialogHeader>Has perdido</AlertDialogHeader>
+                    <AlertDialogHeader>{modal?.title}</AlertDialogHeader>
                     <AlertDialogBody>
-                        Has agotado el numero maximo de intentos posibles
+                        {modal?.description}
                     </AlertDialogBody>
                     <AlertDialogFooter>
-                        <Button colorScheme='red' ml={3}>
-                            Reintentar
+                        <Button colorScheme='red' ml={3} onClick={() => {
+                            disclosure.onClose()
+                            modal?.button1?.onClick && modal?.button1?.onClick()
+                        }}>
+                            {modal?.button1?.text}
                         </Button>
-                        <Button variant='ghost' ml={3} onClick={() => window.location.reload()}>
-                            Salir
+                        <Button variant='ghost' ml={3} onClick={() => {
+                            disclosure.onClose()
+                            modal?.button2?.onClick && modal.button2.onClick()
+                        }}>
+                            {modal?.button2?.text}
                         </Button>
                     </AlertDialogFooter>
                 </AlertDialogContent>

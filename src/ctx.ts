@@ -3,6 +3,6 @@ import { ModalContext } from "./ModalProvider";
 
 
 export default function useModal() {
-    const modalContext = useContext(ModalContext)
-    return modalContext
+    const { openModal } = useContext(ModalContext)
+    return openModal
 }
