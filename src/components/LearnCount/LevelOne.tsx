@@ -169,7 +169,6 @@ export default function LevelOne() {
         })
 
 
-        console.log(sourceList)
 
 
         const randomNumbersList: SourceItem[] = [...sourceList]
@@ -265,10 +264,6 @@ export default function LevelOne() {
     return <div className={styles.mainframe}>
         <DragDropContext onDragEnd={handleValidate}>
             <div className={styles.destination_wrapper}>
-                <div className={styles.status}>
-                    <p className={styles.status_title}>Intentos:</p>
-                    <p className={styles.status_description}>{life.current}/{life.limit}</p>
-                </div>
                 <div className={styles.destination}>
                     {itemList.map(item => (
                         <div key={item.id} className={styles.destination_item} style={{ backgroundColor: initialColor[item.name] }}>
@@ -278,32 +273,39 @@ export default function LevelOne() {
                     ))}
                 </div>
                 <div className={styles.source}>
-                    {randomSourceList
-                        .map((question, index) => (
-                            <Droppable droppableId={`droppable-source-${question.name}`} isDropDisabled key={question.name}>
-                                {(provided) => (
-                                    <div
-                                        ref={provided.innerRef}
-                                        {...provided.droppableProps}
-                                    >
-                                        <Draggable draggableId={`draggable-source-${question.name}`} index={index}>
-                                            {(provided) => (
-                                                <div
-                                                    key={index.toString()}
-                                                    className={styles.source_item}
-                                                    ref={provided.innerRef}
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
-                                                >
-                                                    {question.length}
-                                                </div>
-                                            )}
-                                        </Draggable>
-                                        {provided.placeholder}
-                                    </div>
-                                )}
-                            </Droppable>
-                        ))}
+                    <div className={styles.status}>
+                        <p className={styles.status_title}>Intentos:</p>
+                        <p className={styles.status_description}>{life.current}/{life.limit}</p>
+                    </div>
+                    <div className={styles.random_source_wrapper}>
+                        {randomSourceList
+                            .map((question, index) => (
+                                <Droppable droppableId={`droppable-source-${question.name}`} isDropDisabled key={question.name}>
+                                    {(provided) => (
+                                        <div
+                                            className={styles.droppable_item}
+                                            ref={provided.innerRef}
+                                            {...provided.droppableProps}
+                                        >
+                                            <Draggable draggableId={`draggable-source-${question.name}`} index={index}>
+                                                {(provided) => (
+                                                    <div
+                                                        key={index.toString()}
+                                                        className={styles.source_item}
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                    >
+                                                        {question.length}
+                                                    </div>
+                                                )}
+                                            </Draggable>
+                                            {provided.placeholder}
+                                        </div>
+                                    )}
+                                </Droppable>
+                            ))}
+                    </div>
                 </div>
             </div>
             <div className={styles.table_question}>
