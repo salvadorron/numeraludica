@@ -1,15 +1,16 @@
 import { useState } from "react";
-import { Box, Image, Card, Text, Stack, CardBody } from "@chakra-ui/react";
+import { Box, Image, Text, Stack } from "@chakra-ui/react";
 import { useTypewriter, Cursor } from 'react-simple-typewriter';
 import logo from '../assets/logo.png';
 import Menu from "../components/Board/Menu";
+import Background from "../components/Board/Background";
 import styles from './homepage.module.css';
 import { PiGameControllerFill } from "react-icons/pi";
 import { FaHandsHelping } from "react-icons/fa";
 import { MdScoreboard } from "react-icons/md";
 
 export default function HomePage() {
-    const colors = ["#212962", "#f5eb50", "#b4b1cc", "#a52228"]
+    const colors = ["#212962", "#e5c86d", "#b4b1cc", "#a52228"]
     const [color, setColor] = useState<string>()
     const [typeEffect] = useTypewriter({
         onType(count) {
@@ -21,9 +22,11 @@ export default function HomePage() {
     })
     return (
         <Box 
-            bg="#d8e7f5" 
+            bgColor="#CDE9DB"
             minH="100vh"
+            zIndex={-10}
         >
+            <Background/>
                 <Stack
                     spacing={4}
                     align="center"
@@ -33,7 +36,6 @@ export default function HomePage() {
                         width="35%"
                         justifyContent="center"
                         display="flex"
-                        boxShadow='md'
                     >
                         <Image 
                         padding={6}
