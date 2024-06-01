@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { Box, Image, Flex, Card, CardBody, Text, Heading, Stack, Divider } from "@chakra-ui/react";
+import { Box, Image, Card, Text, Stack, CardBody } from "@chakra-ui/react";
 import { useTypewriter, Cursor } from 'react-simple-typewriter';
 import logo from '../assets/logo.png';
-import nav from '../assets/nav.png';
 import Menu from "../components/Board/Menu";
 import styles from './homepage.module.css';
 import { PiGameControllerFill } from "react-icons/pi";
@@ -10,7 +9,7 @@ import { FaHandsHelping } from "react-icons/fa";
 import { MdScoreboard } from "react-icons/md";
 
 export default function HomePage() {
-    const colors = ["#212962", "#f5eb50", "#7acedc", "#a52228"]
+    const colors = ["#212962", "#f5eb50", "#b4b1cc", "#a52228"]
     const [color, setColor] = useState<string>()
     const [typeEffect] = useTypewriter({
         onType(count) {
@@ -22,24 +21,30 @@ export default function HomePage() {
     })
     return (
         <Box 
-            bg="#b4b1cc" 
+            bg="#d8e7f5" 
             minH="100vh"
         >
-
                 <Stack
                     spacing={4}
                     align="center"
-                >
-                    <Image 
-                        marginTop={12}
-                        w="30%"
-                        alt="NumeraLúdica" 
-                        src={logo} 
-                        />
+                >   <Box
+                        borderRadius={12}
+                        marginTop={6}
+                        width="35%"
+                        justifyContent="center"
+                        display="flex"
+                        boxShadow='md'
+                    >
+                        <Image 
+                        padding={6}
+                            alt="Logo de NumeraLúdica" 
+                            src={logo} 
+                            />
+                    </Box>
                     <Box
                         display="flex"
                         gap={4}
-                        marginTop={12}
+                        marginTop={6}
                     >
                         <Text 
                             color="#000000"
@@ -60,8 +65,6 @@ export default function HomePage() {
                         </Text>
                         
                     </Box>
-
-
                     <Menu>
                         <Menu.Option icon={PiGameControllerFill} bgColor="#ffdf7a" type="primary" name="Empezar" href="aprenderacontar"/>
                         <Menu.Option icon={MdScoreboard} bgColor="#82c8a6" type="secondary"  name="Puntaje" href="puntaje" />
