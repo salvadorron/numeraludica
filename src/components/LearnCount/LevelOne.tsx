@@ -1,11 +1,12 @@
 import { Image } from '@chakra-ui/react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { DragDropContext, Draggable, DropResult, Droppable, ResponderProvided } from 'react-beautiful-dnd';
 import { useNavigate } from 'react-router-dom';
 import useModal from '../../ctx';
 import Background from '../Board/Background';
+import { WorldContext } from '../World/WorldProvider';
 import styles from './levelone.module.css';
 
 const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
@@ -75,6 +76,8 @@ export default function LevelOne() {
 
     const modal = useModal()
 
+    const onContinue = useContext(WorldContext)
+
     const router = useNavigate()
 
     const [itemList, setItemList] = useState<Poke[]>([])
@@ -84,6 +87,8 @@ export default function LevelOne() {
     const [destinationList, setDestinationList] = useState<SourceItem[]>([])
 
     const [randomSourceList, setRandomSourceList] = useState<SourceItem[]>([])
+
+    const [correct, setCorrect] = useState<GameLife>({ current: 0, limit: 3 })
 
     const [life, setLife] = useState<GameLife>({ current: 0, limit: 3 })
 
@@ -258,6 +263,7 @@ export default function LevelOne() {
         if (source.droppableId.replace(/droppable-source-/g, '') === destination.droppableId.replace(/droppable-destination-/g, '')) {
             const element = sourceList.find(sourceItem => sourceItem.name === source.droppableId.replace(/droppable-source-/g, ''))
             if (element) {
+                const nextCorrect = correct.current + 1;
                 const arr = destinationList.map(destinationItem => destinationItem.name === source.droppableId.replace(/droppable-source-/g, '') ? { ...element } : destinationItem);
                 setDestinationList(arr)
                 const currentSourceList = randomSourceList.filter(currentRandomSourceListItem => currentRandomSourceListItem.name !== element.name)
@@ -266,6 +272,14 @@ export default function LevelOne() {
                 setTimeout(() => {
                     droppableDestination.classList.remove(styles.bounce_correct)
                 }, 1000)
+                setCorrect({ ...correct, current: nextCorrect })
+
+                if (nextCorrect === correct.limit) {
+                    onContinue({
+                        summary: 3,
+                        isEnd: true
+                    })
+                }
             }
         } else {
             isGetOver()

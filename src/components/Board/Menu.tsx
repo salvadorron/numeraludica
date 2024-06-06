@@ -1,4 +1,4 @@
-import { BoxProps, Button, Stack, background } from "@chakra-ui/react"
+import { BoxProps, Button, Stack } from "@chakra-ui/react"
 import { ReactElement } from "react"
 import { IconType } from "react-icons"
 import { useNavigate } from "react-router-dom"
@@ -24,17 +24,17 @@ const MenuOption = (props: MenuOption) => {
     }
     const IconComponent = props.icon;
     return (
-        <Button 
-            borderRadius={12} 
+        <Button
+            borderRadius={12}
             borderColor="#82c8a6"
             bgColor={props.bgColor}
             fontSize={18}
             textColor="#0f172a"
-            leftIcon={<IconComponent fontSize={26}/>}
-            _hover={{ backgroundColor: '#212962', color: 'white'}} 
-            w={props.type == "primary" ? "35%" : "30%"} 
+            leftIcon={<IconComponent fontSize={26} />}
+            _hover={{ backgroundColor: '#212962', color: 'white' }}
+            w={props.type == "primary" ? "35%" : "30%"}
             h="70px"
-            size="lg" 
+            size="lg"
             fontFamily="Monserrat"
             onClick={handleClick}
         >
