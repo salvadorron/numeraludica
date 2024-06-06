@@ -1,13 +1,13 @@
+import { Box, Image, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
-import { Box, Image, Text, Stack } from "@chakra-ui/react";
-import { useTypewriter, Cursor } from 'react-simple-typewriter';
-import logo from '../assets/logo.png';
-import Menu from "../components/Board/Menu";
-import Background from "../components/Board/Background";
-import styles from './homepage.module.css';
-import { PiGameControllerFill } from "react-icons/pi";
 import { FaHandsHelping } from "react-icons/fa";
 import { MdScoreboard } from "react-icons/md";
+import { PiGameControllerFill } from "react-icons/pi";
+import { Cursor, useTypewriter } from 'react-simple-typewriter';
+import logo from '../assets/logo.png';
+import Background from "../components/Board/Background";
+import Menu from "../components/Board/Menu";
+import styles from './homepage.module.css';
 
 export default function HomePage() {
     const colors = ["#212962", "#e5c86d", "#b4b1cc", "#a52228"]
@@ -21,64 +21,59 @@ export default function HomePage() {
         deleteSpeed: 50,
     })
     return (
-        <Box 
-            bgColor="#CDE9DB"
-            minH="100vh"
-            zIndex={-10}
-        >
-            <Background/>
-                <Stack
-                    spacing={4}
-                    align="center"
-                >   <Box
-                        borderRadius={12}
-                        marginTop={6}
-                        width="35%"
-                        justifyContent="center"
-                        display="flex"
-                    >
-                        <Image 
+        <Background>
+            <Stack
+                spacing={4}
+                align="center"
+            >   <Box
+                borderRadius={12}
+                marginTop={6}
+                width="35%"
+                justifyContent="center"
+                display="flex"
+            >
+                    <Image
                         padding={6}
-                            alt="Logo de NumeraLúdica" 
-                            src={logo} 
-                            />
-                    </Box>
-                    <Box
-                        display="flex"
-                        gap={4}
-                        marginTop={6}
+                        alt="Logo de NumeraLúdica"
+                        src={logo}
+                    />
+                </Box>
+                <Box
+                    display="flex"
+                    gap={4}
+                    marginTop={6}
+                >
+                    <Text
+                        color="#000000"
+                        fontSize='5xl'
+                        fontWeight='light'
+                        className={styles.Monserrat}
                     >
-                        <Text 
-                            color="#000000"
-                            fontSize='5xl'
-                            fontWeight='light'
-                            className={styles.Monserrat}
-                        >
-                            Aprende
-                        </Text>
-                        <Text 
-                            color={color}
-                            fontSize='5xl'
-                            fontWeight='semibold'
-                            className={styles.Monserrat}
-                        >
-                            {typeEffect}
-                            <Cursor cursorColor={color}/>
-                        </Text>
-                        
-                    </Box>
-                    <Menu>
-                        <Menu.Option icon={PiGameControllerFill} bgColor="#ffdf7a" type="primary" name="Empezar" href="aprenderacontar"/>
-                        <Menu.Option icon={MdScoreboard} bgColor="#82c8a6" type="secondary"  name="Puntaje" href="puntaje" />
-                        <Menu.Option icon={FaHandsHelping} bgColor="#be3b41" type="secondary" name="Ayuda" href="ayuda" />
-                    </Menu>
-                </Stack>
-        </Box>
+                        Aprende
+                    </Text>
+                    <Text
+                        color={color}
+                        fontSize='5xl'
+                        fontWeight='semibold'
+                        className={styles.Monserrat}
+                    >
+                        {typeEffect}
+                        <Cursor cursorColor={color} />
+                    </Text>
+
+                </Box>
+                <Menu>
+                    <Menu.Option icon={PiGameControllerFill} bgColor="#ffdf7a" type="primary" name="Empezar" href="aprenderacontar" />
+                    <Menu.Option icon={MdScoreboard} bgColor="#82c8a6" type="secondary" name="Puntaje" href="puntaje" />
+                    <Menu.Option icon={FaHandsHelping} bgColor="#be3b41" type="secondary" name="Ayuda" href="ayuda" />
+                </Menu>
+            </Stack>
+        </Background>
     )
 }
 
 
-                {/* <Box w="100%">
+{/* <Box w="100%">
                     <Card borderRadius={8} boxShadow='lg'>
                         <CardBody>
                             <Stack spacing={8} marginBottom={8}>

@@ -1,13 +1,13 @@
-import React, { useState, useEffect, ReactNode } from 'react';
-import { HiMiniPuzzlePiece, HiOutlinePuzzlePiece  } from "react-icons/hi2";
-import { FaPuzzlePiece } from "react-icons/fa";
+import { Box } from "@chakra-ui/react";
+import { ReactNode, useEffect, useState } from 'react';
 import { BsPuzzle } from "react-icons/bs";
-import { Box } from "@chakra-ui/react"
+import { FaPuzzlePiece } from "react-icons/fa";
+import { HiMiniPuzzlePiece, HiOutlinePuzzlePiece } from "react-icons/hi2";
 
 const colors = ["#3bb150", "#f5eb50", "#a52228", "#7acedc", "#212962"];
-const icons = [HiMiniPuzzlePiece, FaPuzzlePiece, BsPuzzle, HiOutlinePuzzlePiece ];
+const icons = [HiMiniPuzzlePiece, FaPuzzlePiece, BsPuzzle, HiOutlinePuzzlePiece];
 
-const Background = () => {
+const Background = ({ children }: { children: React.ReactElement }) => {
     const [elements, setElements] = useState<ReactNode[]>([]);
     useEffect(() => {
         const newElements = Array.from({ length: 10 }, () => {
@@ -17,7 +17,7 @@ const Background = () => {
             const left = Math.random() < 0.5 ? Math.random() * 20 : 80 + Math.random() * 10;
             return (
                 <Box position="fixed" top={`${top}%`} left={`${left}%`}>
-                    <Icon style={{ color }} fontSize={76}/>
+                    <Icon style={{ color }} fontSize={76} />
                 </Box>
             );
         });
@@ -25,8 +25,11 @@ const Background = () => {
     }, []);
 
     return (
-        <Box position="relative" zIndex={1}>
-            {elements}
+        <Box bgColor='#CDE9DB' minH='100vh'>
+            <Box position="relative" zIndex={1}>
+                {elements}
+            </Box>
+            {children}
         </Box>
     )
 }

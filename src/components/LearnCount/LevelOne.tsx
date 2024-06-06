@@ -1,9 +1,11 @@
 import { Image } from '@chakra-ui/react';
 import axios from 'axios';
+import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, DropResult, Droppable, ResponderProvided } from 'react-beautiful-dnd';
 import { useNavigate } from 'react-router-dom';
 import useModal from '../../ctx';
+import Background from '../Board/Background';
 import styles from './levelone.module.css';
 
 const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
@@ -44,6 +46,29 @@ type Poke = {
 
 type CardColor = {
     [key: string]: string
+}
+
+
+//Motions
+
+const boardAnimation = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+        opacity: 1,
+        scale: 1,
+        transition: {
+            delayChildren: 0,
+            staggerChildren: 0.050
+        }
+    }
+}
+
+const itemAnimation = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+        y: 0,
+        opacity: 1
+    }
 }
 
 export default function LevelOne() {
@@ -261,78 +286,79 @@ export default function LevelOne() {
     if (!initialColor) return
 
 
-    return <div className={styles.mainframe}>
-        <DragDropContext onDragEnd={handleValidate}>
-            <div className={styles.destination_wrapper}>
-                <div className={styles.destination}>
-                    {itemList.map(item => (
-                        <div key={item.id} className={styles.destination_item} style={{ backgroundColor: initialColor[item.name] }}>
-                            <b className={styles.destination_corner}></b>
-                            <Image className={styles.destination_image} src={item.sprites.other["official-artwork"].front_default} />
+    return <Background>
+        <div className={styles.mainframe}>
+            <DragDropContext onDragEnd={handleValidate}>
+                <div className={styles.destination_wrapper}>
+                    <motion.div className={styles.destination} variants={boardAnimation} initial='hidden' animate='visible'>
+                        {itemList.map(item => (
+                            <motion.div key={item.id} variants={itemAnimation} className={styles.destination_item} style={{ backgroundColor: initialColor[item.name] }}>
+                                <b className={styles.destination_corner}></b>
+                                <Image className={styles.destination_image} src={item.sprites.other["official-artwork"].front_default} />
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                    <div className={styles.source}>
+                        <div className={styles.status}>
+                            <p className={styles.status_title}>Intentos:</p>
+                            <p className={styles.status_description}>{life.current}/{life.limit}</p>
                         </div>
-                    ))}
-                </div>
-                <div className={styles.source}>
-                    <div className={styles.status}>
-                        <p className={styles.status_title}>Intentos:</p>
-                        <p className={styles.status_description}>{life.current}/{life.limit}</p>
+                        <div className={styles.random_source_wrapper}>
+                            {randomSourceList
+                                .map((question, index) => (
+                                    <Droppable droppableId={`droppable-source-${question.name}`} isDropDisabled key={question.name}>
+                                        {(provided) => (
+                                            <div
+                                                className={styles.droppable_item}
+                                                ref={provided.innerRef}
+                                                {...provided.droppableProps}
+                                            >
+                                                <Draggable draggableId={`draggable-source-${question.name}`} index={index}>
+                                                    {(provided) => (
+                                                        <div
+                                                            key={index.toString()}
+                                                            className={styles.source_item}
+                                                            ref={provided.innerRef}
+                                                            {...provided.draggableProps}
+                                                            {...provided.dragHandleProps}
+                                                        >
+                                                            {question.length}
+                                                        </div>
+                                                    )}
+                                                </Draggable>
+                                                {provided.placeholder}
+                                            </div>
+                                        )}
+                                    </Droppable>
+                                ))}
+                        </div>
                     </div>
-                    <div className={styles.random_source_wrapper}>
-                        {randomSourceList
-                            .map((question, index) => (
-                                <Droppable droppableId={`droppable-source-${question.name}`} isDropDisabled key={question.name}>
-                                    {(provided) => (
-                                        <div
-                                            className={styles.droppable_item}
-                                            ref={provided.innerRef}
-                                            {...provided.droppableProps}
-                                        >
-                                            <Draggable draggableId={`draggable-source-${question.name}`} index={index}>
-                                                {(provided) => (
-                                                    <div
-                                                        key={index.toString()}
-                                                        className={styles.source_item}
-                                                        ref={provided.innerRef}
-                                                        {...provided.draggableProps}
-                                                        {...provided.dragHandleProps}
-                                                    >
-                                                        {question.length}
-                                                    </div>
-                                                )}
-                                            </Draggable>
-                                            {provided.placeholder}
+                </div>
+                <div className={styles.table_question}>
+                    <div className={styles.options}>
+                        {destinationList.map(item => (
+                            <Droppable droppableId={`droppable-destination-${item.name}`} key={`destination-${item.name}`}>
+                                {(provided) => (
+                                    <div
+                                        ref={provided.innerRef}
+                                        {...provided.droppableProps}
+                                        className={styles.option}
+                                        id={`destination-${item.name}`}
+                                        key={`destination-${item.name}`}
+                                    >
+                                        <div className={item.length === 0 ? styles.option_image_wrapper : styles.option_image_wrapper_correct}>
+                                            <Image src={item.image} alt="image" className={styles.option_image} />
+                                            {item.length === 0 ? <p className={styles.option_icon}>?</p> : <p className={styles.option_text}>{item.length}</p>}
                                         </div>
-                                    )}
-                                </Droppable>
-                            ))}
+
+                                        {/* {item.length !== 0 && <div className={styles.source_item} >{item.length}</div>} */}
+                                    </div>
+                                )}
+                            </Droppable>
+                        ))}
                     </div>
                 </div>
-            </div>
-            <div className={styles.table_question}>
-                <div className={styles.options}>
-                    {destinationList.map(item => (
-                        <Droppable droppableId={`droppable-destination-${item.name}`} key={`destination-${item.name}`}>
-                            {(provided) => (
-                                <div
-                                    ref={provided.innerRef}
-                                    {...provided.droppableProps}
-                                    className={styles.option}
-                                    id={`destination-${item.name}`}
-                                    key={`destination-${item.name}`}
-                                >
-                                    <div className={item.length === 0 ? styles.option_image_wrapper : styles.option_image_wrapper_correct}>
-                                        <Image src={item.image} alt="image" className={styles.option_image} />
-                                        {item.length === 0 ? <p className={styles.option_icon}>?</p> : <p className={styles.option_text}>{item.length}</p>}
-                                    </div>
-
-                                    {/* {item.length !== 0 && <div className={styles.source_item} >{item.length}</div>} */}
-                                </div>
-                            )}
-                        </Droppable>
-                    ))}
-                </div>
-            </div>
-        </DragDropContext>
-    </div>
-
+            </DragDropContext>
+        </div>
+    </Background>
 }

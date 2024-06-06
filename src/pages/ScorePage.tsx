@@ -1,6 +1,9 @@
+import Background from "../components/Board/Background";
 
 export default function ScorePage() {
     return (
-        <p>//TODO </p>
+        <Background>
+            <p>//TODO </p>
+        </Background>
     )
 }

@@ -3,7 +3,7 @@
     flex-direction: column;
     min-height: 100vh;
     gap: 3em;
-    background-color: #82c8a6;
+    background-color: #CDE9DB;
     padding: .8em;
 }
 
@@ -63,6 +63,7 @@
     flex-direction: column;
     background: #ffdf7a;
     box-shadow: 0px 0px 3px 3px #ffdf7a;
+    z-index: 2;
 }
 
 .options {
