@@ -1,0 +1,118 @@
+[
+{
+	"id": "banana",
+	"url": "/src/assets/fruits/banana.png",
+	"name": "cambur",
+	"color": "#d9cd88"
+},
+{
+	"id": "black-berry-dark",
+	"url": "/src/assets/fruits/black-berry-dark.png",
+	"name": "baya_negra_oscura",
+	"color": "#c29af1"
+},
+{
+	"id": "black-berry-light",
+	"url": "/src/assets/fruits/black-berry-light.png",
+	"name": "baya_negra_clara",
+	"color": "#7b5485"
+},
+{
+	"id": "black-cherry",
+	"url": "/src/assets/fruits/black-cherry.png",
+	"name": "baya_negra_normal",
+	"color": "#d23ff7"
+},
+{
+	"id": "coconut",
+	"url": "/src/assets/fruits/coconut.png",
+	"name": "coco",
+	"color": "#ffe992"
+},
+{
+	"id": "green-apple",
+	"url": "/src/assets/fruits/green-apple.png",
+	"name": "manzana_verde",
+	"color": "#f0ffb2"
+},
+{
+	"id": "green-grape",
+	"url": "/src/assets/fruits/green-grape.png",
+	"name": "uva_verde",
+	"color": "#b6c772"
+},
+{
+	"id": "lemon",
+	"url": "/src/assets/fruits/lemon.png",
+	"name": "limon",
+	"color": "#d9c265"
+},
+{
+	"id": "lime",
+	"url": "/src/assets/fruits/lime.png",
+	"name": "lima",
+	"color": "#d8ef76"
+},
+{
+	"id": "orange",
+	"url": "/src/assets/fruits/orange.png",
+	"name": "naranja",
+	"color": "#ffa841"
+},
+{
+	"id": "peach",
+	"url": "/src/assets/fruits/peach.png",
+	"name": "durazno",
+	"color": "#e9a554"
+},
+{
+	"id": "pear",
+	"url": "/src/assets/fruits/pear.png",
+	"name": "pera",
+	"color": "#def970"
+},
+{
+	"id": "plum",
+	"url": "/src/assets/fruits/plum.png",
+	"name": "ciruela",
+	"color": "#c596fb"
+},
+{
+	"id": "raspberry",
+	"url": "/src/assets/fruits/raspberry.png",
+	"name": "frambuesa",
+	"color": "#fb3434"
+},
+{
+	"id": "red-apple",
+	"url": "/src/assets/fruits/red-apple.png",
+	"name": "manzana_roja",
+	"color": "#ff2929"
+},
+{
+	"id": "red-cherry",
+	"url": "/src/assets/fruits/red-cherry.png",
+	"name": "cereza_roja",
+	"color": "#ff5050"
+},
+{
+	"id": "red-grape",
+	"url": "/src/assets/fruits/red-grape.png",
+	"name": "uva_roja",
+	"color": "#ffadad"
+},
+{
+	"id": "strawberry",
+	"url": "/src/assets/fruits/strawberry.png",
+	"name": "fresa",
+	"color": "#f14f4f"
+},
+{
+	"id": "watermelon",
+	"url": "/src/assets/fruits/watermelon.png",
+	"name": "sandia",
+	"color": "#96f358"
+}
+
+
+]

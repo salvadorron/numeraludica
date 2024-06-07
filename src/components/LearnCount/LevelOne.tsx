@@ -1,5 +1,4 @@
 import { Image } from '@chakra-ui/react';
-import axios from 'axios';
 import { motion } from 'framer-motion';
 import { useContext, useEffect, useState } from 'react';
 import { DragDropContext, Draggable, DropResult, Droppable, ResponderProvided } from 'react-beautiful-dnd';
@@ -8,6 +7,8 @@ import useModal from '../../ctx';
 import Background from '../Board/Background';
 import { WorldContext } from '../World/WorldProvider';
 import styles from './levelone.module.css';
+import fruits from '../../assets/fruits/fruits.json';
+
 
 const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
     arr.reduce((groups, item) => {
@@ -33,20 +34,11 @@ type SourceItem = {
     image: string
 }
 
-type Poke = {
+type Fruit = {
     id: string,
-    name: string
-    sprites: {
-        other: {
-            "official-artwork": {
-                front_default: string
-            }
-        }
-    }
-}
-
-type CardColor = {
-    [key: string]: string
+    url: string
+    name: string,
+    color: string
 }
 
 
@@ -80,7 +72,7 @@ export default function LevelOne() {
 
     const router = useNavigate()
 
-    const [itemList, setItemList] = useState<Poke[]>([])
+    const [itemList, setItemList] = useState<Fruit[]>([])
 
     const [sourceList, setSourceList] = useState<SourceItem[]>([])
 
@@ -92,8 +84,6 @@ export default function LevelOne() {
 
     const [life, setLife] = useState<GameLife>({ current: 0, limit: 3 })
 
-    const [initialColor, setColor] = useState<CardColor | undefined>(undefined)
-
 
     function getRandomUniqueNumber(arr: SourceItem[]) {
         const randonNumber = Math.floor(Math.random() * 10) + 1;
@@ -102,18 +92,9 @@ export default function LevelOne() {
     }
 
 
-    async function getPokemonById(id: number) {
-        const { data } = await axios.get<Poke>(`https://pokeapi.co/api/v2/pokemon/${id}`)
-        return data
-    }
-
-    function getRandomColor() {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
+    function getFruitById(id: number) {
+        const fruit = fruits[id]
+        return fruit
     }
 
 
@@ -123,9 +104,19 @@ export default function LevelOne() {
             ...life,
             current: 0
         })
-        const initalRandomId1 = Math.floor((Math.random() * 100) + 1);
-        const initalRandomId2 = Math.floor((Math.random() * 100) + 1);
-        const initalRandomId3 = Math.floor((Math.random() * 100) + 1);
+
+        setCorrect({
+            ...correct,
+            current: 0
+        })
+
+        let initalRandomId1, initalRandomId2, initalRandomId3;
+
+        do {
+            initalRandomId1 = Math.floor((Math.random() * 19));
+            initalRandomId2 = Math.floor((Math.random() * 19));
+            initalRandomId3 = Math.floor((Math.random() * 19));
+        } while((initalRandomId1 === initalRandomId2) || (initalRandomId1 === initalRandomId3) || (initalRandomId2 === initalRandomId3))
 
         let num1, num2, num3;
         let max = 30;
@@ -148,39 +139,27 @@ export default function LevelOne() {
 
 
 
-        const listPoke1: Poke[] = [];
-        const listPoke2: Poke[] = [];
-        const listPoke3: Poke[] = [];
+        const listPoke1: Fruit[] = [];
+        const listPoke2: Fruit[] = [];
+        const listPoke3: Fruit[] = [];
 
 
         for (let i = 1; i <= num1; i++) {
-            try {
-                const data = await getPokemonById(initalRandomId1)
+                const data = getFruitById(initalRandomId1)
                 listPoke1.push({ ...data, id: crypto.randomUUID() })
-            } catch (err) {
-                setItemList([])
-                break;
-            }
         }
 
         for (let i = 1; i <= num2; i++) {
-            try {
-                const data = await getPokemonById(initalRandomId2)
+  
+                const data = getFruitById(initalRandomId2)
                 listPoke2.push({ ...data, id: crypto.randomUUID() })
-            } catch (err) {
-                setItemList([])
-                break;
-            }
+            
         }
 
         for (let i = 1; i <= num3; i++) {
-            try {
-                const data = await getPokemonById(initalRandomId3)
+                const data = getFruitById(initalRandomId3)
                 listPoke3.push({ ...data, id: crypto.randomUUID() })
-            } catch (err) {
-                setItemList([])
-                break;
-            }
+
         }
 
         const randomAllList = [...listPoke1, ...listPoke2, ...listPoke3].sort(() => Math.random() - 0.5)
@@ -190,7 +169,7 @@ export default function LevelOne() {
         const sourceList = Object.keys(groupRandomAllList).map(item => {
             const name = item;
             const length = groupRandomAllList[item].length;
-            const image = groupRandomAllList[item][0].sprites.other['official-artwork'].front_default
+            const image = groupRandomAllList[item][0].url
             return {
                 name,
                 length,
@@ -202,13 +181,6 @@ export default function LevelOne() {
 
 
         const randomNumbersList: SourceItem[] = [...sourceList]
-        const colors = {}
-
-        sourceList.forEach(item => {
-            Object.assign(colors, {
-                [item.name]: getRandomColor()
-            })
-        })
 
         Array.from(Array(7), (_m) => {
             const randomNumber = getRandomUniqueNumber(randomNumbersList);
@@ -217,7 +189,6 @@ export default function LevelOne() {
 
         randomNumbersList.sort(() => Math.random() - 0.5)
 
-        setColor(colors)
         setRandomSourceList(randomNumbersList)
         setItemList(randomAllList)
         setSourceList(sourceList)
@@ -297,8 +268,6 @@ export default function LevelOne() {
 
 
     if (itemList.length === 0) return
-    if (!initialColor) return
-
 
     return <Background>
         <div className={styles.mainframe}>
@@ -306,9 +275,9 @@ export default function LevelOne() {
                 <div className={styles.destination_wrapper}>
                     <motion.div className={styles.destination} variants={boardAnimation} initial='hidden' animate='visible'>
                         {itemList.map(item => (
-                            <motion.div key={item.id} variants={itemAnimation} className={styles.destination_item} style={{ backgroundColor: initialColor[item.name] }}>
+                            <motion.div key={item.id} variants={itemAnimation} className={styles.destination_item} style={{ backgroundColor: item.color }}>
                                 <b className={styles.destination_corner}></b>
-                                <Image className={styles.destination_image} src={item.sprites.other["official-artwork"].front_default} />
+                                <Image className={styles.destination_image} src={item.url} />
                             </motion.div>
                         ))}
                     </motion.div>
@@ -364,6 +333,7 @@ export default function LevelOne() {
                                             <Image src={item.image} alt="image" className={styles.option_image} />
                                             {item.length === 0 ? <p className={styles.option_icon}>?</p> : <p className={styles.option_text}>{item.length}</p>}
                                         </div>
+                                        
 
                                         {/* {item.length !== 0 && <div className={styles.source_item} >{item.length}</div>} */}
                                     </div>
