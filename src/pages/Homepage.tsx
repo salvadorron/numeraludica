@@ -47,7 +47,7 @@ export default function HomePage() {
                         color="#000000"
                         fontSize='5xl'
                         fontWeight='light'
-                        className={styles.Monserrat}
+                        className={styles.Montserrat}
                     >
                         Aprende
                     </Text>
@@ -55,7 +55,7 @@ export default function HomePage() {
                         color={color}
                         fontSize='5xl'
                         fontWeight='semibold'
-                        className={styles.Monserrat}
+                        className={styles.Montserrat}
                     >
                         {typeEffect}
                         <Cursor cursorColor={color} />

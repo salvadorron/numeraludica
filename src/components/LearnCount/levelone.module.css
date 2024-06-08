@@ -2,24 +2,11 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    gap: 3em;
-    background-color: #CDE9DB;
-    padding: .8em;
-    z-index: 2;
-}
-
-.destination_wrapper {
-    display: flex;
-    padding: 10px;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    z-index: 10;
+    padding-top: 8px;
 }
 
 .status {
-    width: 12em;
+    width: 14em;
     height: 5em;
     display: flex;
     align-self: flex-start;
@@ -41,31 +28,62 @@
     font-size: medium;
     text-transform: uppercase;
     font-weight: 700;
+    font-family: Montserrat;
 }
 
 .status_description {
-    font-size: medium;
+    font-size: xx-large;
+    font-family: Montserrat;
     font-weight: 500;
 }
 
 .destination {
     background-color: #FDFFF5;
     box-shadow: 0px 0px 3px 3px #FDFFF5;
-    padding: 8px;
+    padding: 4px;
     display: grid;
-    grid-template-columns: repeat(6, 8em);
-    gap: 5px;
-    grid-template-rows: repeat(5, 8em);
+    max-width: 60%;
+    max-height: 60%;
+    gap: 4px;
+    grid-template-columns: repeat(6, 7em);
+    grid-template-rows: repeat(5, 7em);
     place-content: center;
+}
+
+.destination_wrapper {
+    display: flex;
+    padding: 10px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 4%;
+    z-index: 10;
+}
+
+.destination_item {
+    position: relative;
+}
+
+.destination_corner {
+    position: absolute;
+    inset: 4px;
+    background: rgba(255, 255, 255, 0.6);
+    z-index: 2;
+}
+
+.destination_image {
+    position: absolute;
+    z-index: 3;
 }
 
 .table_question {
     display: flex;
+    min-width: 100%;
     justify-content: center;
     flex-direction: column;
-    background: #ffdf7a;
-    box-shadow: 0px 0px 3px 3px #ffdf7a;
-    z-index: 2;
+    z-index: 10;
+    position: fixed;
+    bottom: 0;
 }
 
 .options {
@@ -96,15 +114,18 @@
 
 .option_image{
     aspect-ratio: 1/1;
+    opacity: 0.8;
 }
 
 .option_image_wrapper {
     position: relative;
-    width: 7em;
+    width: 6em;
+    height: 6em;
     background-color: #222;
     border: 1px solid #FDFFF5;
     border-radius: 8px;
     scale: 0.8;
+    opacity: 0.8;
     z-index: 10;
 }
 
@@ -116,6 +137,7 @@
     background-color: #FDFFF5;
     border-radius: 8px;
     scale: 0.8;
+    opacity: 0.8;
     z-index: 10;
 }
 
@@ -168,23 +190,6 @@
     outline: none;
 }
 
-.destination_item {
-    position: relative;
-}
-
-.destination_corner {
-    position: absolute;
-    inset: 4px;
-    background: rgba(255, 255, 255, 0.6);
-    z-index: 2;
-}
-
-.destination_image {
-    position: absolute;
-    z-index: 3;
-    aspect-ratio: 1/1;
-    scale: 0.9;
-}
 
 .source {
     align-self: start;
@@ -197,6 +202,7 @@
 
 .source_item {
     display: flex;
+    font-family: Montserrat;
     justify-content: center;
     align-items: center;
     align-self: center;

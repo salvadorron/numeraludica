@@ -2,117 +2,99 @@
 {
 	"id": "banana",
 	"url": "/src/assets/fruits/banana.png",
-	"name": "cambur",
-	"color": "#d9cd88"
+	"name": "Cambur",
+	"color": "#FFC300"
 },
 {
-	"id": "black-berry-dark",
-	"url": "/src/assets/fruits/black-berry-dark.png",
-	"name": "baya_negra_oscura",
-	"color": "#c29af1"
+	"id": "carrot",
+	"url": "/src/assets/fruits/carrot.png",
+	"name": "Zanahoria",
+	"color": "#F9780C"
 },
 {
-	"id": "black-berry-light",
-	"url": "/src/assets/fruits/black-berry-light.png",
-	"name": "baya_negra_clara",
-	"color": "#7b5485"
+	"id": "red-tomatoe",
+	"url": "/src/assets/fruits/red-tomatoe.png",
+	"name": "Tomate",
+	"color": "#F90C0C"
 },
 {
-	"id": "black-cherry",
-	"url": "/src/assets/fruits/black-cherry.png",
-	"name": "baya_negra_normal",
-	"color": "#d23ff7"
+	"id": "birds-eye-chilli",
+	"url": "/src/assets/fruits/birds-eye-chilli.png",
+	"name": "Chile Ojo de Pajaro",
+	"color": "#B30202"
 },
 {
-	"id": "coconut",
-	"url": "/src/assets/fruits/coconut.png",
-	"name": "coco",
-	"color": "#ffe992"
+	"id": "cherrys",
+	"url": "/src/assets/fruits/cherrys.png",
+	"name": "Cereza",
+	"color": "#E73535"
 },
 {
-	"id": "green-apple",
-	"url": "/src/assets/fruits/green-apple.png",
-	"name": "manzana_verde",
-	"color": "#f0ffb2"
+	"id": "radish",
+	"url": "/src/assets/fruits/radish.png",
+	"name": "Rabano",
+	"color": "#E73535"
 },
 {
-	"id": "green-grape",
-	"url": "/src/assets/fruits/green-grape.png",
-	"name": "uva_verde",
+	"id": "green-grapes",
+	"url": "/src/assets/fruits/green-grapes.png",
+	"name": "Uvas Verdes",
 	"color": "#b6c772"
-},
-{
-	"id": "lemon",
-	"url": "/src/assets/fruits/lemon.png",
-	"name": "limon",
-	"color": "#d9c265"
-},
-{
-	"id": "lime",
-	"url": "/src/assets/fruits/lime.png",
-	"name": "lima",
-	"color": "#d8ef76"
-},
-{
-	"id": "orange",
-	"url": "/src/assets/fruits/orange.png",
-	"name": "naranja",
-	"color": "#ffa841"
-},
-{
-	"id": "peach",
-	"url": "/src/assets/fruits/peach.png",
-	"name": "durazno",
-	"color": "#e9a554"
-},
-{
-	"id": "pear",
-	"url": "/src/assets/fruits/pear.png",
-	"name": "pera",
-	"color": "#def970"
 },
 {
 	"id": "plum",
 	"url": "/src/assets/fruits/plum.png",
-	"name": "ciruela",
-	"color": "#c596fb"
+	"name": "Ciruela",
+	"color": "#E73535"
 },
 {
-	"id": "raspberry",
-	"url": "/src/assets/fruits/raspberry.png",
-	"name": "frambuesa",
-	"color": "#fb3434"
+	"id": "lime",
+	"url": "/src/assets/fruits/lime.png",
+	"name": "Lima",
+	"color": "#F2F90C"
+},
+{
+	"id": "orange",
+	"url": "/src/assets/fruits/orange.png",
+	"name": "Naranja",
+	"color": "#F9780C"
 },
 {
 	"id": "red-apple",
 	"url": "/src/assets/fruits/red-apple.png",
-	"name": "manzana_roja",
-	"color": "#ff2929"
+	"name": "Manzana Roja",
+	"color": "#F90C0C"
 },
 {
-	"id": "red-cherry",
-	"url": "/src/assets/fruits/red-cherry.png",
-	"name": "cereza_roja",
-	"color": "#ff5050"
+	"id": "pear",
+	"url": "/src/assets/fruits/pear.png",
+	"name": "Pera",
+	"color": "#62D55C"
 },
 {
-	"id": "red-grape",
-	"url": "/src/assets/fruits/red-grape.png",
-	"name": "uva_roja",
-	"color": "#ffadad"
+	"id": "half-red-apple",
+	"url": "/src/assets/fruits/half-red-apple.png",
+	"name": "Manzana Roja por la mitad",
+	"color": "#F90C0C"
 },
 {
-	"id": "strawberry",
-	"url": "/src/assets/fruits/strawberry.png",
-	"name": "fresa",
-	"color": "#f14f4f"
+	"id": "half-orange",
+	"url": "/src/assets/fruits/half-orange.png",
+	"name": "Naranja por la mitad",
+	"color": "#F9780C"
 },
 {
-	"id": "watermelon",
-	"url": "/src/assets/fruits/watermelon.png",
-	"name": "sandia",
-	"color": "#96f358"
+	"id": "half-red-tomatoe",
+	"url": "/src/assets/fruits/half-red-tomatoe.png",
+	"name": "Tomate Rojo por la mitad",
+	"color": "#F90C0C"
+},
+{
+	"id": "half-pear",
+	"url": "/src/assets/fruits/half-pear.png",
+	"name": "Pera por la mitad",
+	"color": "#62D55C"
 }
-
-
 ]
+
+

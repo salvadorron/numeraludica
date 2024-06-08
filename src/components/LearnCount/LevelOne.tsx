@@ -1,4 +1,4 @@
-import { Image } from '@chakra-ui/react';
+import { Box, Image, Tooltip } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useContext, useEffect, useState } from 'react';
 import { DragDropContext, Draggable, DropResult, Droppable, ResponderProvided } from 'react-beautiful-dnd';
@@ -32,6 +32,7 @@ type SourceItem = {
     name: string
     length: number
     image: string
+    color: string
 }
 
 type Fruit = {
@@ -80,9 +81,9 @@ export default function LevelOne() {
 
     const [randomSourceList, setRandomSourceList] = useState<SourceItem[]>([])
 
-    const [correct, setCorrect] = useState<GameLife>({ current: 0, limit: 3 })
+    const [correct, setCorrect] = useState<GameLife>({ current: 3, limit: 0 })
 
-    const [life, setLife] = useState<GameLife>({ current: 0, limit: 3 })
+    const [life, setLife] = useState<GameLife>({ current: 3, limit: 0 })
 
 
     function getRandomUniqueNumber(arr: SourceItem[]) {
@@ -102,12 +103,12 @@ export default function LevelOne() {
 
         setLife({
             ...life,
-            current: 0
+            current: 3
         })
 
         setCorrect({
             ...correct,
-            current: 0
+            current: 3
         })
 
         let initalRandomId1, initalRandomId2, initalRandomId3;
@@ -169,11 +170,13 @@ export default function LevelOne() {
         const sourceList = Object.keys(groupRandomAllList).map(item => {
             const name = item;
             const length = groupRandomAllList[item].length;
-            const image = groupRandomAllList[item][0].url
+            const image = groupRandomAllList[item][0].url;
+            const color = groupRandomAllList[item][0].color;
             return {
                 name,
                 length,
-                image
+                image,
+                color
             }
         })
 
@@ -184,7 +187,7 @@ export default function LevelOne() {
 
         Array.from(Array(7), (_m) => {
             const randomNumber = getRandomUniqueNumber(randomNumbersList);
-            randomNumbersList.push({ name: crypto.randomUUID(), length: randomNumber, image: 'none' })
+            randomNumbersList.push({ name: crypto.randomUUID(), length: randomNumber, image: 'none', color: 'none' })
         })
 
         randomNumbersList.sort(() => Math.random() - 0.5)
@@ -200,7 +203,7 @@ export default function LevelOne() {
     }
 
     function isGetOver() {
-        const nextTry = life.current + 1
+        const nextTry = life.current - 1;
         setLife({ ...life, current: nextTry })
         if (nextTry === life.limit) {
             modal({
@@ -267,8 +270,7 @@ export default function LevelOne() {
     }, [])
 
 
-    if (itemList.length === 0) return
-
+    if (itemList.length < 3) return
     return <Background>
         <div className={styles.mainframe}>
             <DragDropContext onDragEnd={handleValidate}>
@@ -277,14 +279,16 @@ export default function LevelOne() {
                         {itemList.map(item => (
                             <motion.div key={item.id} variants={itemAnimation} className={styles.destination_item} style={{ backgroundColor: item.color }}>
                                 <b className={styles.destination_corner}></b>
-                                <Image className={styles.destination_image} src={item.url} />
+                                <Tooltip hasArrow label={item.name} placement='bottom-start' bg={item.color}>
+                                    <Image className={styles.destination_image} src={item.url} />
+                                </Tooltip>
                             </motion.div>
                         ))}
                     </motion.div>
                     <div className={styles.source}>
                         <div className={styles.status}>
-                            <p className={styles.status_title}>Intentos:</p>
-                            <p className={styles.status_description}>{life.current}/{life.limit}</p>
+                            <p className={styles.status_title}>Intentos restantes</p>
+                            <p className={styles.status_description} style={{color: life.current > 1 ? '#3bb150' : '#a52228'}}>{life.current}</p>
                         </div>
                         <div className={styles.random_source_wrapper}>
                             {randomSourceList
@@ -317,7 +321,7 @@ export default function LevelOne() {
                         </div>
                     </div>
                 </div>
-                <div className={styles.table_question}>
+                <Box className={styles.table_question} maxH='sm'>
                     <div className={styles.options}>
                         {destinationList.map(item => (
                             <Droppable droppableId={`droppable-destination-${item.name}`} key={`destination-${item.name}`}>
@@ -329,11 +333,12 @@ export default function LevelOne() {
                                         id={`destination-${item.name}`}
                                         key={`destination-${item.name}`}
                                     >
-                                        <div className={item.length === 0 ? styles.option_image_wrapper : styles.option_image_wrapper_correct}>
-                                            <Image src={item.image} alt="image" className={styles.option_image} />
-                                            {item.length === 0 ? <p className={styles.option_icon}>?</p> : <p className={styles.option_text}>{item.length}</p>}
-                                        </div>
-                                        
+                                        <Tooltip hasArrow label={item.name} placement='bottom-start' bg={item.color}>
+                                            <div className={item.length === 0 ? styles.option_image_wrapper : styles.option_image_wrapper_correct}>
+                                                    <Image src={item.image} alt="image" className={styles.option_image} />
+                                                    {item.length === 0 ? <p className={styles.option_icon}>?</p> : <p className={styles.option_text}>{item.length}</p>}
+                                            </div>
+                                        </Tooltip>
 
                                         {/* {item.length !== 0 && <div className={styles.source_item} >{item.length}</div>} */}
                                     </div>
@@ -341,7 +346,7 @@ export default function LevelOne() {
                             </Droppable>
                         ))}
                     </div>
-                </div>
+                </Box>
             </DragDropContext>
         </div>
     </Background>
