@@ -3,11 +3,11 @@ import { motion } from 'framer-motion';
 import { useContext, useEffect, useState } from 'react';
 import { DragDropContext, Draggable, DropResult, Droppable, ResponderProvided } from 'react-beautiful-dnd';
 import { useNavigate } from 'react-router-dom';
+import fruits from '../../assets/fruits/fruits.json';
 import useModal from '../../ctx';
 import Background from '../Board/Background';
 import { WorldContext } from '../World/WorldProvider';
 import styles from './levelone.module.css';
-import fruits from '../../assets/fruits/fruits.json';
 
 
 const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
@@ -68,7 +68,7 @@ export default function LevelOne() {
 
     const modal = useModal()
 
-    const onContinue = useContext(WorldContext)
+    const worlProvider = useContext(WorldContext)
 
     const router = useNavigate()
 
@@ -116,7 +116,7 @@ export default function LevelOne() {
             initalRandomId1 = Math.floor((Math.random() * 19));
             initalRandomId2 = Math.floor((Math.random() * 19));
             initalRandomId3 = Math.floor((Math.random() * 19));
-        } while((initalRandomId1 === initalRandomId2) || (initalRandomId1 === initalRandomId3) || (initalRandomId2 === initalRandomId3))
+        } while ((initalRandomId1 === initalRandomId2) || (initalRandomId1 === initalRandomId3) || (initalRandomId2 === initalRandomId3))
 
         let num1, num2, num3;
         let max = 30;
@@ -145,20 +145,20 @@ export default function LevelOne() {
 
 
         for (let i = 1; i <= num1; i++) {
-                const data = getFruitById(initalRandomId1)
-                listPoke1.push({ ...data, id: crypto.randomUUID() })
+            const data = getFruitById(initalRandomId1)
+            listPoke1.push({ ...data, id: crypto.randomUUID() })
         }
 
         for (let i = 1; i <= num2; i++) {
-  
-                const data = getFruitById(initalRandomId2)
-                listPoke2.push({ ...data, id: crypto.randomUUID() })
-            
+
+            const data = getFruitById(initalRandomId2)
+            listPoke2.push({ ...data, id: crypto.randomUUID() })
+
         }
 
         for (let i = 1; i <= num3; i++) {
-                const data = getFruitById(initalRandomId3)
-                listPoke3.push({ ...data, id: crypto.randomUUID() })
+            const data = getFruitById(initalRandomId3)
+            listPoke3.push({ ...data, id: crypto.randomUUID() })
 
         }
 
@@ -246,9 +246,9 @@ export default function LevelOne() {
                 setCorrect({ ...correct, current: nextCorrect })
 
                 if (nextCorrect === correct.limit) {
-                    onContinue({
-                        summary: 3,
-                        isEnd: true
+                    worlProvider.onFinish({
+                        summary: 34,
+                        showSummary: true
                     })
                 }
             }
@@ -333,9 +333,7 @@ export default function LevelOne() {
                                             <Image src={item.image} alt="image" className={styles.option_image} />
                                             {item.length === 0 ? <p className={styles.option_icon}>?</p> : <p className={styles.option_text}>{item.length}</p>}
                                         </div>
-                                        
 
-                                        {/* {item.length !== 0 && <div className={styles.source_item} >{item.length}</div>} */}
                                     </div>
                                 )}
                             </Droppable>

@@ -15,11 +15,10 @@ type ModalOptions = {
 }
 
 
-type ModalFunction = {
-    openModal: (modalOptions?: ModalOptions) => void
-}
+type ModalFunction = (options?: ModalOptions) => void
 
-export const ModalContext = createContext<ModalFunction>({ openModal: () => null })
+
+export const ModalContext = createContext<ModalFunction>(() => null)
 
 export default function ModalProvider({ children }: { children: React.ReactElement }) {
 
@@ -37,7 +36,7 @@ export default function ModalProvider({ children }: { children: React.ReactEleme
     const ref = useRef<HTMLButtonElement>(null)
 
     return (
-        <ModalContext.Provider value={{ openModal }}>
+        <ModalContext.Provider value={openModal}>
             <AlertDialog
                 motionPreset='slideInTop'
                 leastDestructiveRef={ref}
