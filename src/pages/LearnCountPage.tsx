@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import LevelOne from "../components/LearnCount/LevelOne";
+import { AbacusLevel } from "../components/Abacus/AbacusLevel";
 import WorldProvider, { WorldContext } from "../components/World/WorldProvider";
 
 export default function LearnCountPage() {
@@ -13,7 +13,8 @@ export default function LearnCountPage() {
     // PROVIDER
 
     return <WorldProvider>
-        <LevelOne />
+        <AbacusLevel />
+        {/* <LevelOne /> */}
         <ExampleComponent />
     </WorldProvider>
 }
