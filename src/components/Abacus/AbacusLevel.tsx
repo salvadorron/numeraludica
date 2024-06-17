@@ -1,5 +1,6 @@
-import { CSSProperties } from "react";
+import { CSSProperties, useState } from "react";
 import Background from "../Board/Background";
+import AbacusToken from "./abacus_token.model";
 
 const abacusStyles: { [key: string]: CSSProperties } = {
     abacusRoot: {
@@ -16,7 +17,9 @@ const abacusStyles: { [key: string]: CSSProperties } = {
         height: '600px',
     },
     abacusGrids: {
+        position: 'relative',
         display: 'grid',
+        gridTemplateRows: 'repeat(5, 40px)',
         gap: '100px',
         width: '100%',
         height: '100%',
@@ -24,65 +27,61 @@ const abacusStyles: { [key: string]: CSSProperties } = {
     },
     abacusGridItem: {
         display: 'flex',
+        height: '100%',
+        width: '100%',
         gap: 5,
         border: '1px solid green',
-    },
-    tokenGridItem: {
-        position: 'relative',
-        width: '40px',
-        height: '100%',
-        backgroundColor: 'red'
     }
 
 }
 export function AbacusLevel() {
 
-    const tokenGridItem = document.querySelectorAll<HTMLDivElement>('.token')
-    let enterMouse = false;
-    let activeElement = false;
-    let initX = 0;
 
-    window.onmouseup = function (e) {
-        activeElement = false;
-        enterMouse = false;
-    }
+      const $canvas = document.querySelectorAll<HTMLCanvasElement>('.gridItem');
+      let mousePressed = false;
+      const listToken: AbacusToken[] = []
+      
+      $canvas.forEach(($canvasItem, index) => {
+        const { height, width } = $canvasItem.getBoundingClientRect();
+        $canvasItem.width = width
+        $canvasItem.height = height
+        const context2d = $canvasItem.getContext('2d')
+        
+        const token = new AbacusToken(0, 0, 40, $canvasItem.height, '#000')
+        
+        context2d?.fillRect(token.getX(), token.getY(), token.getWidth(), token.getHeight())
 
-    tokenGridItem.forEach(token => {
-        token.onmouseenter = function (e) {
-            enterMouse = true;
+        listToken.push(token)  
+
+        $canvasItem.onmousedown = function (e) {
+            context2d!.fillStyle = '#0f0';
+            context2d?.fillRect(0,0, listToken[index].getX(), 300)
+            mousePressed = e.buttons === 1 && (e.offsetX < listToken[index].getX())
         }
 
-        token.onmousedown = function (e) {
-            activeElement = true;
-            initX = e.clientX;
-        }
-
-        token.onmousemove = function (e) {
-            if (enterMouse && activeElement && e.buttons === 1) {          
-                let currentX = e.clientX
-                let x = currentX - initX
-                initX = currentX
-                token.style.left = x + (Number.parseInt(token.style.left.replace(/px/g, '')) || 0)  + 'px';
+        $canvasItem.onmousemove = function(e) {
+            if(mousePressed){
+                context2d && listToken[index].drawToken(context2d, e.offsetX - (listToken[index].getWidth() / 2))
             }
         }
-    })
+      })
+
+      document.onmouseup = function (e) {
+        mousePressed = false;
+      }
+
 
 
     return <Background>
         <div style={abacusStyles.abacusRoot}>
             <div style={abacusStyles.abacusMainFrame}>
                 <div style={abacusStyles.abacusGrids}>
-                    <div style={abacusStyles.abacusGridItem} className="gridItem">
-                        <div style={abacusStyles.tokenGridItem} className="token"></div>
-                        <div style={abacusStyles.tokenGridItem} className="token"></div>
-                        <div style={abacusStyles.tokenGridItem} className="token"></div>
-                    </div>
-                    <div style={abacusStyles.abacusGridItem} className="gridItem"></div>
-                    <div style={abacusStyles.abacusGridItem} className="gridItem"></div>
-                    <div style={abacusStyles.abacusGridItem} className="gridItem"></div>
-                    <div style={abacusStyles.abacusGridItem} className="gridItem"></div>
+                    <canvas style={abacusStyles.abacusGridItem} className="gridItem"></canvas>
+                    <canvas style={abacusStyles.abacusGridItem} className="gridItem"></canvas>
+                    <canvas style={abacusStyles.abacusGridItem} className="gridItem"></canvas>
+                    <canvas style={abacusStyles.abacusGridItem} className="gridItem"></canvas>
+                    <canvas style={abacusStyles.abacusGridItem} className="gridItem"></canvas>
                 </div>
-                <div style={{ paddingTop: 10 }}>ESTADO: {0}</div>
             </div>
         </div>
     </Background>
