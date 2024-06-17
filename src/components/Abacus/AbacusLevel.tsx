@@ -36,51 +36,61 @@ const abacusStyles: { [key: string]: CSSProperties } = {
 }
 export function AbacusLevel() {
 
+    const [currentTokenIndex, setCurrentTokenIndex] = useState<number>(-1)
+    const listToken: AbacusToken[] = []
+    let mouseDown = false;
 
-      const $canvas = document.querySelectorAll<HTMLCanvasElement>('.gridItem');
-      let mousePressed = false;
-      const listToken: AbacusToken[] = []
-      
-      $canvas.forEach(($canvasItem, index) => {
-        const { height, width } = $canvasItem.getBoundingClientRect();
-        $canvasItem.width = width
-        $canvasItem.height = height
-        const context2d = $canvasItem.getContext('2d')
-        
-        const token = new AbacusToken(0, 0, 40, $canvasItem.height, '#000')
-        
-        context2d?.fillRect(token.getX(), token.getY(), token.getWidth(), token.getHeight())
+    // const listRandonNumbers = Array.from(Array(5), (_v, index) => Math.floor(Math.random() * 10) + 1)
 
-        listToken.push(token)  
 
-        $canvasItem.onmousedown = function (e) {
-            context2d!.fillStyle = '#0f0';
-            context2d?.fillRect(0,0, listToken[index].getX(), 300)
-            mousePressed = e.buttons === 1 && (e.offsetX < listToken[index].getX())
+    const handleCanvasRef = (canvas: HTMLCanvasElement | null) => {
+        if (!canvas) return
+        const { height, width } = canvas.getBoundingClientRect()
+        canvas.width = width;
+        canvas.height = height;
+        const context2d = canvas.getContext('2d');
+        if (!context2d) return
+        let x = 0;
+        for (let i = 1; i <= 10; i++) {
+            const token = new AbacusToken(context2d, x, 0, 20, canvas.height, '#000')
+            context2d.beginPath()
+            context2d.rect(token.getX(), token.getY(), token.getWidth(), token.getHeight())
+            context2d.fillStyle = token.getColor()
+            context2d.fill()
+            listToken.push(token)
+            x += 30;
         }
 
-        $canvasItem.onmousemove = function(e) {
-            if(mousePressed){
-                context2d && listToken[index].drawToken(context2d, e.offsetX - (listToken[index].getWidth() / 2))
-            }
-        }
-      })
+    }
 
-      document.onmouseup = function (e) {
-        mousePressed = false;
-      }
+    function handleMouseMove(evt: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
+        if (!mouseDown) return
+        if (currentTokenIndex === -1) return
+        const cursorCoordinate = listToken[currentTokenIndex].translateX(evt.nativeEvent.offsetX - (listToken[currentTokenIndex].getWidth() / 2))
+        listToken[currentTokenIndex].drawToken(cursorCoordinate)
+    }
 
+    function handleMouseDown(evt: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
+        const tokenIndex = listToken.findIndex((value) => evt.nativeEvent.offsetX <= value.getX() + value.getWidth() && evt.nativeEvent.offsetX >= value.getX())
+        setCurrentTokenIndex(tokenIndex)
+        if (tokenIndex === -1) return
+        mouseDown = evt.nativeEvent.offsetX <= listToken[tokenIndex].getX() + listToken[tokenIndex].getWidth() && evt.nativeEvent.offsetX >= listToken[tokenIndex].getX() && evt.buttons === 1
+    }
+
+    document.onmouseup = function () {
+        mouseDown = false;
+    }
 
 
     return <Background>
         <div style={abacusStyles.abacusRoot}>
             <div style={abacusStyles.abacusMainFrame}>
                 <div style={abacusStyles.abacusGrids}>
-                    <canvas style={abacusStyles.abacusGridItem} className="gridItem"></canvas>
-                    <canvas style={abacusStyles.abacusGridItem} className="gridItem"></canvas>
-                    <canvas style={abacusStyles.abacusGridItem} className="gridItem"></canvas>
-                    <canvas style={abacusStyles.abacusGridItem} className="gridItem"></canvas>
-                    <canvas style={abacusStyles.abacusGridItem} className="gridItem"></canvas>
+                    <canvas ref={handleCanvasRef} style={abacusStyles.abacusGridItem} onMouseUp={() => mouseDown = false} onMouseMove={handleMouseMove} onMouseDown={handleMouseDown} className="gridItem"></canvas>
+                    <canvas ref={handleCanvasRef} style={abacusStyles.abacusGridItem} onMouseUp={() => mouseDown = false} onMouseMove={handleMouseMove} onMouseDown={handleMouseDown} className="gridItem"></canvas>
+                    <canvas ref={handleCanvasRef} style={abacusStyles.abacusGridItem} onMouseUp={() => mouseDown = false} onMouseMove={handleMouseMove} onMouseDown={handleMouseDown} className="gridItem"></canvas>
+                    <canvas ref={handleCanvasRef} style={abacusStyles.abacusGridItem} onMouseUp={() => mouseDown = false} onMouseMove={handleMouseMove} onMouseDown={handleMouseDown} className="gridItem"></canvas>
+                    <canvas ref={handleCanvasRef} style={abacusStyles.abacusGridItem} onMouseUp={() => mouseDown = false} onMouseMove={handleMouseMove} onMouseDown={handleMouseDown} className="gridItem"></canvas>
                 </div>
             </div>
         </div>
