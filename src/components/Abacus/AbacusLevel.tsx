@@ -1,4 +1,4 @@
-import { CSSProperties, useState } from "react";
+import { CSSProperties } from "react";
 import Background from "../Board/Background";
 import AbacusToken from "./abacus_token.model";
 
@@ -36,11 +36,38 @@ const abacusStyles: { [key: string]: CSSProperties } = {
 }
 export function AbacusLevel() {
 
-    const [currentTokenIndex, setCurrentTokenIndex] = useState<number>(-1)
     const listToken: AbacusToken[] = []
     let mouseDown = false;
 
-    // const listRandonNumbers = Array.from(Array(5), (_v, index) => Math.floor(Math.random() * 10) + 1)
+
+    function getCurrentToken(evt: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
+        const tokenValue = listToken.find((value) => {
+            if (evt.clientY >= value.getContext2d().canvas.getBoundingClientRect().y && evt.clientY <= value.getContext2d().canvas.getBoundingClientRect().y + value.getContext2d().canvas.height) {
+                if (evt.nativeEvent.offsetX >= value.getX() && evt.nativeEvent.offsetX <= value.getX() + value.getWidth()) {
+                    return value
+                }
+            }
+        });
+
+        return tokenValue
+    }
+
+    function draw(context: CanvasRenderingContext2D, x: number, y: number, w: number, color: string) {
+        if (x < 0) {
+            x = 0;
+        }
+        if (x > context.canvas.width - w) {
+            x = context.canvas.width - w
+        }
+
+        requestAnimationFrame(() => draw)
+        //context.clearRect(0, 0, context.canvas.width, context.canvas.height)
+        context.beginPath()
+        context.rect(x, y, w, context.canvas.height)
+        context.fillStyle = color;
+        context.fill()
+        requestAnimationFrame(() => draw)
+    }
 
 
     const handleCanvasRef = (canvas: HTMLCanvasElement | null) => {
@@ -63,18 +90,34 @@ export function AbacusLevel() {
 
     }
 
-    function handleMouseMove(evt: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
+    async function handleMouseMove(evt: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
         if (!mouseDown) return
-        if (currentTokenIndex === -1) return
-        const cursorCoordinate = listToken[currentTokenIndex].translateX(evt.nativeEvent.offsetX - (listToken[currentTokenIndex].getWidth() / 2))
-        listToken[currentTokenIndex].drawToken(cursorCoordinate)
+        const currentToken = getCurrentToken(evt)
+        if (!currentToken) return
+
+        let context = currentToken.getContext2d()
+        context.clearRect(0, 0, context.canvas.width, context.canvas.height)
+        listToken.forEach(token => {
+            context = token.getContext2d()
+            if (token.getId() === currentToken.getId()) {
+                const cursorCoordinate = currentToken.translateX(evt.nativeEvent.offsetX + evt.movementX - (currentToken.getWidth() / 2))
+                draw(context, cursorCoordinate, currentToken.getY(), currentToken.getWidth(), currentToken.getColor())
+            }
+            else {
+                draw(context, token.getX(), token.getY(), token.getWidth(), token.getColor())
+            }
+        })
+
+
     }
 
     function handleMouseDown(evt: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
-        const tokenIndex = listToken.findIndex((value) => evt.nativeEvent.offsetX <= value.getX() + value.getWidth() && evt.nativeEvent.offsetX >= value.getX())
-        setCurrentTokenIndex(tokenIndex)
-        if (tokenIndex === -1) return
-        mouseDown = evt.nativeEvent.offsetX <= listToken[tokenIndex].getX() + listToken[tokenIndex].getWidth() && evt.nativeEvent.offsetX >= listToken[tokenIndex].getX() && evt.buttons === 1
+
+        const currentToken = getCurrentToken(evt)
+
+        if (!currentToken) return
+
+        mouseDown = evt.buttons === 1
     }
 
     document.onmouseup = function () {

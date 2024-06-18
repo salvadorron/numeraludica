@@ -49,16 +49,16 @@ export default class AbacusToken {
         return this.x = x;
     }
 
-    public drawToken(cursorCoordinate: number): AbacusToken | undefined {
-        if (cursorCoordinate < 0 || cursorCoordinate > this.context.canvas.width - this.width) return
-        requestAnimationFrame(() => this.drawToken)
-        this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height)
-        this.context.beginPath()
-        this.context.rect(cursorCoordinate, this.y, this.width, this.context.canvas.height)
-        this.context.fillStyle = this.color;
-        this.context.fill()
-        requestAnimationFrame(() => this.drawToken)
-        return this
-    }
+    // public drawToken(cursorCoordinate: number): AbacusToken | undefined {
+    //     if (cursorCoordinate < 0 || cursorCoordinate > this.context.canvas.width - this.width) return
+    //     requestAnimationFrame(() => this.drawToken)
+    //     this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height)
+    //     this.context.beginPath()
+    //     this.context.rect(cursorCoordinate, this.y, this.width, this.context.canvas.height)
+    //     this.context.fillStyle = this.color;
+    //     this.context.fill()
+    //     requestAnimationFrame(() => this.drawToken)
+    //     return this
+    // }
 
 }
