@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { AbacusLevel } from "../components/Abacus/AbacusLevel";
+import LevelOne from "../components/LearnCount/LevelOne";
 import WorldProvider, { WorldContext } from "../components/World/WorldProvider";
 
 export default function LearnCountPage() {

@@ -47,7 +47,7 @@ export default function HomePage() {
                         color="#000000"
                         fontSize='5xl'
                         fontWeight='light'
-                        className={styles.Monserrat}
+                        className={styles.Montserrat}
                     >
                         Aprende
                     </Text>
@@ -55,7 +55,7 @@ export default function HomePage() {
                         color={color}
                         fontSize='5xl'
                         fontWeight='semibold'
-                        className={styles.Monserrat}
+                        className={styles.Montserrat}
                     >
                         {typeEffect}
                         <Cursor cursorColor={color} />
@@ -80,7 +80,7 @@ export default function HomePage() {
                             <Box>
                                 <Text 
                                     bgGradient='linear(to-r, #82c8a6, #b4b1cc)'
-                                    className={styles.Monserrat}
+                                    className={styles.Montserrat}
                                     fontSize='5xl'
                                     bgClip='text'
                                     fontWeight='semibold'
@@ -90,7 +90,7 @@ export default function HomePage() {
                                 <Divider/>
                             </Box>
                             <Box>
-                                <Heading className={styles.Monserrat} size="lg" color="#b4b1cc">
+                                <Heading className={styles.Montserrat} size="lg" color="#b4b1cc">
                                     ¿Qué es NumeraLúdica?
                                 </Heading>
                             </Box>

@@ -9,7 +9,7 @@
 }
 
 @font-face {
-    font-family: "Monserrat"; 
+    font-family: "Montserrat"; 
     src:    url("../src/assets/fonts/Montserrat-Regular.otf") format("opentype"),
             url("../src/assets/fonts/Montserrat-Light.otf") format("opentype")
             url("../src/assets/fonts/Montserrat-Medium.otf") format("opentype")
@@ -18,5 +18,5 @@
 }
 
 .Monserrat {
-    font-family: 'Monserrat', sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }

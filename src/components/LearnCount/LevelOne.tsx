@@ -1,13 +1,13 @@
-import { Image } from '@chakra-ui/react';
+import { Box, Image, Tooltip } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useContext, useEffect, useState } from 'react';
 import { DragDropContext, Draggable, DropResult, Droppable, ResponderProvided } from 'react-beautiful-dnd';
 import { useNavigate } from 'react-router-dom';
-import fruits from '../../assets/fruits/fruits.json';
 import useModal from '../../ctx';
 import Background from '../Board/Background';
 import { WorldContext } from '../World/WorldProvider';
 import styles from './levelone.module.css';
+import fruits from '../../assets/fruits/fruits.json';
 
 
 const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
@@ -32,6 +32,7 @@ type SourceItem = {
     name: string
     length: number
     image: string
+    color: string
 }
 
 type Fruit = {
@@ -82,7 +83,7 @@ export default function LevelOne() {
 
     const [correct, setCorrect] = useState<GameLife>({ current: 0, limit: 3 })
 
-    const [life, setLife] = useState<GameLife>({ current: 0, limit: 3 })
+    const [life, setLife] = useState<GameLife>({ current: 3, limit: 0 })
 
 
     function getRandomUniqueNumber(arr: SourceItem[]) {
@@ -102,7 +103,7 @@ export default function LevelOne() {
 
         setLife({
             ...life,
-            current: 0
+            current: 3
         })
 
         setCorrect({
@@ -113,10 +114,10 @@ export default function LevelOne() {
         let initalRandomId1, initalRandomId2, initalRandomId3;
 
         do {
-            initalRandomId1 = Math.floor((Math.random() * 19));
-            initalRandomId2 = Math.floor((Math.random() * 19));
-            initalRandomId3 = Math.floor((Math.random() * 19));
-        } while ((initalRandomId1 === initalRandomId2) || (initalRandomId1 === initalRandomId3) || (initalRandomId2 === initalRandomId3))
+            initalRandomId1 = Math.floor((Math.random() * 16));
+            initalRandomId2 = Math.floor((Math.random() * 16));
+            initalRandomId3 = Math.floor((Math.random() * 16));
+        } while((initalRandomId1 === initalRandomId2) || (initalRandomId1 === initalRandomId3) || (initalRandomId2 === initalRandomId3))
 
         let num1, num2, num3;
         let max = 30;
@@ -145,35 +146,37 @@ export default function LevelOne() {
 
 
         for (let i = 1; i <= num1; i++) {
-            const data = getFruitById(initalRandomId1)
-            listPoke1.push({ ...data, id: crypto.randomUUID() })
+                const data = getFruitById(initalRandomId1)
+                listPoke1.push({...data, id: crypto.randomUUID(), color: '#e5c86d' })
         }
 
         for (let i = 1; i <= num2; i++) {
-
-            const data = getFruitById(initalRandomId2)
-            listPoke2.push({ ...data, id: crypto.randomUUID() })
-
+  
+                const data = getFruitById(initalRandomId2)
+                listPoke2.push({ ...data, id: crypto.randomUUID(), color: '#82c8a6' })
+            
         }
 
         for (let i = 1; i <= num3; i++) {
-            const data = getFruitById(initalRandomId3)
-            listPoke3.push({ ...data, id: crypto.randomUUID() })
+                const data = getFruitById(initalRandomId3)
+                listPoke3.push({ ...data, id: crypto.randomUUID(), color: '#be3b41' })
 
         }
 
         const randomAllList = [...listPoke1, ...listPoke2, ...listPoke3].sort(() => Math.random() - 0.5)
 
         const groupRandomAllList = groupBy(randomAllList, i => i.name)
-
+        console.log(groupRandomAllList)
         const sourceList = Object.keys(groupRandomAllList).map(item => {
             const name = item;
             const length = groupRandomAllList[item].length;
-            const image = groupRandomAllList[item][0].url
+            const image = groupRandomAllList[item][0].url;
+            const color = groupRandomAllList[item][0].color;
             return {
                 name,
                 length,
-                image
+                image,
+                color
             }
         })
 
@@ -184,7 +187,7 @@ export default function LevelOne() {
 
         Array.from(Array(7), (_m) => {
             const randomNumber = getRandomUniqueNumber(randomNumbersList);
-            randomNumbersList.push({ name: crypto.randomUUID(), length: randomNumber, image: 'none' })
+            randomNumbersList.push({ name: crypto.randomUUID(), length: randomNumber, image: 'none', color: 'none' })
         })
 
         randomNumbersList.sort(() => Math.random() - 0.5)
@@ -200,7 +203,7 @@ export default function LevelOne() {
     }
 
     function isGetOver() {
-        const nextTry = life.current + 1
+        const nextTry = life.current - 1;
         setLife({ ...life, current: nextTry })
         if (nextTry === life.limit) {
             modal({
@@ -267,28 +270,37 @@ export default function LevelOne() {
     }, [])
 
 
-    if (itemList.length === 0) return
-
+    if (itemList.length < 3) return
     return <Background>
         <div className={styles.mainframe}>
             <DragDropContext onDragEnd={handleValidate}>
                 <div className={styles.destination_wrapper}>
                     <motion.div className={styles.destination} variants={boardAnimation} initial='hidden' animate='visible'>
-                        {itemList.map(item => (
-                            <motion.div key={item.id} variants={itemAnimation} className={styles.destination_item} style={{ backgroundColor: item.color }}>
-                                <b className={styles.destination_corner}></b>
-                                <Image className={styles.destination_image} src={item.url} />
-                            </motion.div>
-                        ))}
+                        {itemList.map(item => {
+                            const splitName = item.name.split("-");
+                            const displayName = splitName.join(" ")
+                            return(
+                                <motion.div key={item.id} variants={itemAnimation} className={styles.destination_item} style={{ backgroundColor: item.color }}>
+                                    <b className={styles.destination_corner}></b>
+                                    <Tooltip hasArrow label={displayName.toUpperCase()} placement='bottom-start' bg='#212962' fontSize='md' fontWeight={700}>
+                                        <Image className={styles.destination_image} src={item.url} />
+                                    </Tooltip>
+                                </motion.div>
+                            )
+                        })}
                     </motion.div>
                     <div className={styles.source}>
                         <div className={styles.status}>
-                            <p className={styles.status_title}>Intentos:</p>
-                            <p className={styles.status_description}>{life.current}/{life.limit}</p>
+                            <p className={styles.status_description} style={{color: life.current > 1 ? '#3bb150' : '#a52228'}}>{life.current}</p>
+                            <div>
+                                <p className={styles.status_title}>Intentos</p>
+                                <p className={styles.status_title}> restantes</p>
+                            </div>
                         </div>
                         <div className={styles.random_source_wrapper}>
                             {randomSourceList
-                                .map((question, index) => (
+                                .map((question, index) => 
+                                    (
                                     <Droppable droppableId={`droppable-source-${question.name}`} isDropDisabled key={question.name}>
                                         {(provided) => (
                                             <div
@@ -317,29 +329,36 @@ export default function LevelOne() {
                         </div>
                     </div>
                 </div>
-                <div className={styles.table_question}>
+                <Box className={styles.table_question} maxH='sm'>
                     <div className={styles.options}>
-                        {destinationList.map(item => (
-                            <Droppable droppableId={`droppable-destination-${item.name}`} key={`destination-${item.name}`}>
-                                {(provided) => (
-                                    <div
-                                        ref={provided.innerRef}
-                                        {...provided.droppableProps}
-                                        className={styles.option}
-                                        id={`destination-${item.name}`}
-                                        key={`destination-${item.name}`}
-                                    >
-                                        <div className={item.length === 0 ? styles.option_image_wrapper : styles.option_image_wrapper_correct}>
-                                            <Image src={item.image} alt="image" className={styles.option_image} />
-                                            {item.length === 0 ? <p className={styles.option_icon}>?</p> : <p className={styles.option_text}>{item.length}</p>}
+                        {destinationList.map(item => {
+                            const splitName = item.name.split("-");
+                            const displayName = splitName.join(" ")
+                            return  (
+                                <Droppable droppableId={`droppable-destination-${item.name}`} key={`destination-${item.name}`}>
+                                    {(provided) => (
+                                        <div
+                                            ref={provided.innerRef}
+                                            {...provided.droppableProps}
+                                            className={styles.option}
+                                            id={`destination-${item.name}`}
+                                            key={`destination-${item.name}`}
+                                        >
+                                            <Tooltip hasArrow label={displayName.toUpperCase()} placement='bottom-start' bg='#212962' fontSize='md' fontWeight={700}>
+                                                <div className={item.length === 0 ? styles.option_image_wrapper : styles.option_image_wrapper_correct}>
+                                                        <Image src={item.image} alt="image" className={styles.option_image} />
+                                                        {item.length === 0 ? <p className={styles.option_icon}>?</p> : <p className={styles.option_text}>{item.length}</p>}
+                                                </div>
+                                            </Tooltip>
+    
+                                            {/* {item.length !== 0 && <div className={styles.source_item} >{item.length}</div>} */}
                                         </div>
-
-                                    </div>
-                                )}
-                            </Droppable>
-                        ))}
+                                    )}
+                                </Droppable>
+                            )
+                        })}
                     </div>
-                </div>
+                </Box>
             </DragDropContext>
         </div>
     </Background>
