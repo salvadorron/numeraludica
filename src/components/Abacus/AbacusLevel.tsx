@@ -1,141 +1,145 @@
-import { CSSProperties } from "react";
-import Background from "../Board/Background";
-import AbacusToken from "./abacus_token.model";
+import React, { useState, useEffect, useRef } from 'react';
+import './Abacus.css';
+import Background from '../Board/Background';
+import { Flex } from '@chakra-ui/react';
 
-const abacusStyles: { [key: string]: CSSProperties } = {
-    abacusRoot: {
-        display: 'grid',
-        placeContent: 'center',
-        border: '1px solid black',
-        height: '100vh',
-    },
-    abacusMainFrame: {
-        border: '2px solid black',
-        borderTop: 'none',
-        padding: '2px',
-        width: '800px',
-        height: '600px',
-    },
-    abacusGrids: {
-        position: 'relative',
-        display: 'grid',
-        gridTemplateRows: 'repeat(5, 40px)',
-        gap: '100px',
-        width: '100%',
-        height: '100%',
-        borderRadius: '6px'
-    },
-    abacusGridItem: {
-        display: 'flex',
-        height: '100%',
-        width: '100%',
-        gap: 5,
-        border: '1px solid green',
-    }
+const TOTAL_BEADS = 10;
+const BEAD_SIZE = 30;
+const SPACE_BETWEEN_BEADS = BEAD_SIZE + 2; // Define spacing between beads
+const PADDING = 15; // Padding for the abacus container
 
+interface BeadPosition {
+  id: number;
+  position: number;
+  x: number;
 }
-export function AbacusLevel() {
 
-    const listToken: AbacusToken[] = []
-    let mouseDown = false;
+const AbacusLevel: React.FC<{color: string}> = ({color}) => {
+  const [targetNumber, setTargetNumber] = useState<number>(0);
+  const [currentCount, setCurrentCount] = useState<number>(0);
+  const [beadPositions, setBeadPositions] = useState<BeadPosition[]>([]);
+  const [draggingBead, setDraggingBead] = useState<number | null>(null);
+  const [mouseOffsetX, setMouseOffsetX] = useState<number>(0); // Track mouse offset for exact positioning
+  const abacusRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    generateRandomNumber();
+    initializeBeads();
+  }, []);
 
-    function getCurrentToken(evt: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
-        const tokenValue = listToken.find((value) => {
-            if (evt.clientY >= value.getContext2d().canvas.getBoundingClientRect().y && evt.clientY <= value.getContext2d().canvas.getBoundingClientRect().y + value.getContext2d().canvas.height) {
-                if (evt.nativeEvent.offsetX >= value.getX() && evt.nativeEvent.offsetX <= value.getX() + value.getWidth()) {
-                    return value
-                }
-            }
-        });
-
-        return tokenValue
+  useEffect(() => {
+    // Check if any bead has reached the end and update count
+    const endBead = beadPositions.find(bead => bead.position === 1);
+    if (endBead) {
+      setCurrentCount(currentCount + 1);
+      const updatedBeadPositions = beadPositions.map(bead =>
+        bead.id === endBead.id ? { ...bead, position: 0 } : bead
+      );
+      setBeadPositions(updatedBeadPositions);
     }
+  }, [beadPositions]);
 
-    function draw(context: CanvasRenderingContext2D, x: number, y: number, w: number, color: string) {
-        if (x < 0) {
-            x = 0;
+  const generateRandomNumber = () => {
+    const randomNum = Math.floor(Math.random() * (20 - 4 + 1)) + 4;
+    setTargetNumber(randomNum);
+  };
+
+  const initializeBeads = () => {
+    const initialPositions = Array(TOTAL_BEADS).fill(0).map((_, idx) => ({
+      id: idx,
+      position: 0,
+      x: idx * SPACE_BETWEEN_BEADS + PADDING, // Start beads separated with padding
+    }));
+    setBeadPositions(initialPositions);
+  };
+
+  const handleMouseDown = (index: number) => (event: React.MouseEvent) => {
+    setDraggingBead(index);
+    const offsetX = event.clientX - beadPositions[index].x; // Calculate offset from bead position
+    setMouseOffsetX(offsetX);
+    // Prevent default to avoid text selection
+    event.preventDefault();
+  };
+
+  const handleMouseMove = (event: React.MouseEvent) => {
+    if (draggingBead !== null) {
+      const abacusRect = abacusRef.current?.getBoundingClientRect();
+      if (abacusRect) {
+        const newBeadPositions = [...beadPositions];
+        let newX = event.clientX - abacusRect.left - mouseOffsetX / 2; // Adjust for mouse offset
+
+        // Ensure beads do not collide or jump over each other
+        const draggingIndex = draggingBead;
+
+        // Limit movement within the abacus bounds
+        if (newX < PADDING) {
+          newX = PADDING;
         }
-        if (x > context.canvas.width - w) {
-            x = context.canvas.width - w
+
+        if (draggingIndex > 0) {
+          const leftBead = newBeadPositions[draggingIndex - 1];
+          const leftLimit = leftBead.x + SPACE_BETWEEN_BEADS;
+          if (newX < leftLimit) {
+            newX = leftLimit;
+          }
         }
 
-        requestAnimationFrame(() => draw)
-        //context.clearRect(0, 0, context.canvas.width, context.canvas.height)
-        context.beginPath()
-        context.rect(x, y, w, context.canvas.height)
-        context.fillStyle = color;
-        context.fill()
-        requestAnimationFrame(() => draw)
-    }
-
-
-    const handleCanvasRef = (canvas: HTMLCanvasElement | null) => {
-        if (!canvas) return
-        const { height, width } = canvas.getBoundingClientRect()
-        canvas.width = width;
-        canvas.height = height;
-        const context2d = canvas.getContext('2d');
-        if (!context2d) return
-        let x = 0;
-        for (let i = 1; i <= 10; i++) {
-            const token = new AbacusToken(context2d, x, 0, 20, canvas.height, '#000')
-            context2d.beginPath()
-            context2d.rect(token.getX(), token.getY(), token.getWidth(), token.getHeight())
-            context2d.fillStyle = token.getColor()
-            context2d.fill()
-            listToken.push(token)
-            x += 30;
+        if (draggingIndex < newBeadPositions.length - 1) {
+          const rightBead = newBeadPositions[draggingIndex + 1];
+          const rightLimit = rightBead.x - SPACE_BETWEEN_BEADS;
+          if (newX > rightLimit) {
+            newX = rightLimit;
+          }
         }
 
+        newBeadPositions[draggingIndex] = {
+          ...newBeadPositions[draggingIndex],
+          x: newX,
+          position: newX > abacusRect.width - BEAD_SIZE - PADDING ? 1 : 0,
+        };
+
+        setBeadPositions(newBeadPositions);
+      }
     }
+  };
 
-    async function handleMouseMove(evt: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
-        if (!mouseDown) return
-        const currentToken = getCurrentToken(evt)
-        if (!currentToken) return
+  const handleMouseUp = () => {
+    setDraggingBead(null);
+  };
 
-        let context = currentToken.getContext2d()
-        context.clearRect(0, 0, context.canvas.width, context.canvas.height)
-        listToken.forEach(token => {
-            context = token.getContext2d()
-            if (token.getId() === currentToken.getId()) {
-                const cursorCoordinate = currentToken.translateX(evt.nativeEvent.offsetX + evt.movementX - (currentToken.getWidth() / 2))
-                draw(context, cursorCoordinate, currentToken.getY(), currentToken.getWidth(), currentToken.getColor())
-            }
-            else {
-                draw(context, token.getX(), token.getY(), token.getWidth(), token.getColor())
-            }
-        })
+  document.onmouseup = handleMouseUp
 
+  return (
+    <div className="abacus-container">
+      <div className="target-number">Target: {targetNumber}</div>
+      <div className="abacus" ref={abacusRef} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
+        {beadPositions.map((bead, index) => (
+          <div
+            key={index}
+            className="bead"
+            onMouseDown={handleMouseDown(index)}
+            style={{ left: bead.x, backgroundColor: color }}
+          >
+            {index + 1}
+          </div>
+        ))}
+      </div>
+      <div className="current-count">Current: {currentCount}</div>
+    </div>
+  );
+};
 
-    }
-
-    function handleMouseDown(evt: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
-
-        const currentToken = getCurrentToken(evt)
-
-        if (!currentToken) return
-
-        mouseDown = evt.buttons === 1
-    }
-
-    document.onmouseup = function () {
-        mouseDown = false;
-    }
-
-
-    return <Background>
-        <div style={abacusStyles.abacusRoot}>
-            <div style={abacusStyles.abacusMainFrame}>
-                <div style={abacusStyles.abacusGrids}>
-                    <canvas ref={handleCanvasRef} style={abacusStyles.abacusGridItem} onMouseUp={() => mouseDown = false} onMouseMove={handleMouseMove} onMouseDown={handleMouseDown} className="gridItem"></canvas>
-                    <canvas ref={handleCanvasRef} style={abacusStyles.abacusGridItem} onMouseUp={() => mouseDown = false} onMouseMove={handleMouseMove} onMouseDown={handleMouseDown} className="gridItem"></canvas>
-                    <canvas ref={handleCanvasRef} style={abacusStyles.abacusGridItem} onMouseUp={() => mouseDown = false} onMouseMove={handleMouseMove} onMouseDown={handleMouseDown} className="gridItem"></canvas>
-                    <canvas ref={handleCanvasRef} style={abacusStyles.abacusGridItem} onMouseUp={() => mouseDown = false} onMouseMove={handleMouseMove} onMouseDown={handleMouseDown} className="gridItem"></canvas>
-                    <canvas ref={handleCanvasRef} style={abacusStyles.abacusGridItem} onMouseUp={() => mouseDown = false} onMouseMove={handleMouseMove} onMouseDown={handleMouseDown} className="gridItem"></canvas>
-                </div>
-            </div>
-        </div>
+const AbacusLevelReplica: React.FC = () => {
+  return (
+    <Background>
+        <Flex direction='column'>
+        <AbacusLevel color={"red"}/>
+        <AbacusLevel color={"yellow"}/>
+        <AbacusLevel color={"blue"} />
+        <AbacusLevel color={"green"}/>
+        </Flex>
     </Background>
-}
+  );
+};
+
+export default AbacusLevelReplica;

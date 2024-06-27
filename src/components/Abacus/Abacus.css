@@ -1,0 +1,33 @@
+.abacus-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.target-number,
+.current-count {
+  font-size: 24px;
+  
+}
+
+.abacus {
+  position: relative;
+  display: flex;
+  justify-content: flex-start; /* Ensure beads are aligned to the left */
+  align-items: center;
+  border: 2px solid #000;
+  height: 50px; /* Reduce height for better display */
+  width: 100%; /* Occupy full width */
+  margin: 0 auto;
+  padding: 0 15px;
+  overflow: hidden; /* Ensure beads don't overflow */
+}
+
+.bead {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px; /* Space between beads */
+  cursor: grab;
+  position: absolute; /* Position absolute for free movement */
+  transition: transform 0.1s ease-out; /* Smooth transition */
+}
