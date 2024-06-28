@@ -11,7 +11,8 @@ interface Menu {
 interface MenuOption {
     type: string,
     name: string,
-    href: string
+    href?: string
+    onClick?: () => void,
     bgColor: string,
     icon: string | IconType,
 }
@@ -20,8 +21,13 @@ interface MenuOption {
 const MenuOption = (props: MenuOption) => {
     const router = useNavigate()
     const handleClick = () => {
-        router(`/${props.href}`)
+        if (props.href) {
+            router(`/${props.href}`)
+        } else if (props.onClick) {
+            props.onClick();
+        }
     }
+    
     const IconComponent = props.icon;
     return (
         <Button
