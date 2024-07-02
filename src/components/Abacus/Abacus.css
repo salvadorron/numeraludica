@@ -9,12 +9,16 @@
   
 }
 
+
 .abacus {
+  border: 2px solid #a52a2a;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
   position: relative;
   display: flex;
   justify-content: flex-start; /* Ensure beads are aligned to the left */
   align-items: center;
-  border: 2px solid #000;
   height: 50px; /* Reduce height for better display */
   width: 100%; /* Occupy full width */
   margin: 0 auto;
@@ -23,6 +27,7 @@
 }
 
 .bead {
+  border: 2px solid #fff;
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -31,3 +36,12 @@
   position: absolute; /* Position absolute for free movement */
   transition: transform 0.1s ease-out; /* Smooth transition */
 }
+
+/* bead number with white text color and white shadow */
+.bead-number {
+  color: #fff;
+  text-shadow: 1px 1px 2px #000;
+}
+
+
+/*bead goal is a div inside the abacus container*/

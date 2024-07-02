@@ -19,8 +19,11 @@ const AbacusLevel: React.FC<{color: string}> = ({color}) => {
   const [currentCount, setCurrentCount] = useState<number>(0);
   const [beadPositions, setBeadPositions] = useState<BeadPosition[]>([]);
   const [draggingBead, setDraggingBead] = useState<number | null>(null);
-  const [mouseOffsetX, setMouseOffsetX] = useState<number>(0); // Track mouse offset for exact positioning
+  const [mouseOffsetX, setMouseOffsetX] = useState<number>(0);
   const abacusRef = useRef<HTMLDivElement>(null);
+  const [positions, setPositions] = useState<{ [key: number]: { track: boolean, x: number } }>({ 0: { x: 1547, track: false }, 1: { x: 1579, track: false }, 2: { x: 1611, track: false }, 3: { x: 1643, track: false }, 4: { x: 1675, track: false }, 5: { x: 1707, track: false }, 6: { x: 1739, track: false }, 7: { x: 1771, track: false }, 8: { x: 1803, track: false }, 9: { x: 1835, track: false } });
+
+
 
   useEffect(() => {
     generateRandomNumber();
@@ -28,16 +31,19 @@ const AbacusLevel: React.FC<{color: string}> = ({color}) => {
   }, []);
 
   useEffect(() => {
+
     // Check if any bead has reached the end and update count
-    const endBead = beadPositions.find(bead => bead.position === 1);
-    if (endBead) {
-      setCurrentCount(currentCount + 1);
-      const updatedBeadPositions = beadPositions.map(bead =>
-        bead.id === endBead.id ? { ...bead, position: 0 } : bead
-      );
-      setBeadPositions(updatedBeadPositions);
-    }
-  }, [beadPositions]);
+    if(!draggingBead) return;
+    if (beadPositions[draggingBead].x === positions[beadPositions[draggingBead].id].x && positions[beadPositions[draggingBead].id].track === false) {
+        setCurrentCount(currentCount + 1);
+        setPositions({ ...positions, [beadPositions[draggingBead].id]: { x: positions[beadPositions[draggingBead].id].x, track: true } })
+      }
+      if(beadPositions[draggingBead].x !== positions[beadPositions[draggingBead].id].x && positions[beadPositions[draggingBead].id].track === true){
+        setCurrentCount(currentCount - 1);
+        setPositions({ ...positions, [beadPositions[draggingBead].id]: { x: positions[beadPositions[draggingBead].id].x, track: false } })
+      }
+    
+  }, [beadPositions, currentCount, draggingBead, positions]);
 
   const generateRandomNumber = () => {
     const randomNum = Math.floor(Math.random() * (20 - 4 + 1)) + 4;
@@ -75,6 +81,9 @@ const AbacusLevel: React.FC<{color: string}> = ({color}) => {
         if (newX < PADDING) {
           newX = PADDING;
         }
+        if(newX > abacusRect.width - BEAD_SIZE - PADDING) {
+          newX = abacusRect.width - BEAD_SIZE - PADDING;
+        }
 
         if (draggingIndex > 0) {
           const leftBead = newBeadPositions[draggingIndex - 1];
@@ -88,18 +97,20 @@ const AbacusLevel: React.FC<{color: string}> = ({color}) => {
           const rightBead = newBeadPositions[draggingIndex + 1];
           const rightLimit = rightBead.x - SPACE_BETWEEN_BEADS;
           if (newX > rightLimit) {
-            newX = rightLimit;
+            newX = rightLimit
           }
         }
 
+        
         newBeadPositions[draggingIndex] = {
           ...newBeadPositions[draggingIndex],
           x: newX,
           position: newX > abacusRect.width - BEAD_SIZE - PADDING ? 1 : 0,
         };
-
         setBeadPositions(newBeadPositions);
+
       }
+      
     }
   };
 
@@ -111,7 +122,7 @@ const AbacusLevel: React.FC<{color: string}> = ({color}) => {
 
   return (
     <div className="abacus-container">
-      <div className="target-number">Target: {targetNumber}</div>
+      <div className="target-number">Total: {targetNumber}</div>
       <div className="abacus" ref={abacusRef} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
         {beadPositions.map((bead, index) => (
           <div
@@ -120,11 +131,11 @@ const AbacusLevel: React.FC<{color: string}> = ({color}) => {
             onMouseDown={handleMouseDown(index)}
             style={{ left: bead.x, backgroundColor: color }}
           >
-            {index + 1}
+            <p className="bead-number">{index + 1}</p>
           </div>
         ))}
       </div>
-      <div className="current-count">Current: {currentCount}</div>
+      <div className="current-count">Actual: {currentCount}</div>
     </div>
   );
 };
@@ -133,10 +144,10 @@ const AbacusLevelReplica: React.FC = () => {
   return (
     <Background>
         <Flex direction='column'>
-        <AbacusLevel color={"red"}/>
-        <AbacusLevel color={"yellow"}/>
-        <AbacusLevel color={"blue"} />
-        <AbacusLevel color={"green"}/>
+        <AbacusLevel color={"#ce453f"}/>
+        <AbacusLevel color={"#9b486b"}/>
+        <AbacusLevel color={"#0086a3"} />
+        <AbacusLevel color={"#2cc050"}/>
         </Flex>
     </Background>
   );
