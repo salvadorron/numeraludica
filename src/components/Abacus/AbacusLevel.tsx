@@ -21,29 +21,42 @@ const AbacusLevel: React.FC<{color: string}> = ({color}) => {
   const [draggingBead, setDraggingBead] = useState<number | null>(null);
   const [mouseOffsetX, setMouseOffsetX] = useState<number>(0);
   const abacusRef = useRef<HTMLDivElement>(null);
-  const [positions, setPositions] = useState<{ [key: number]: { track: boolean, x: number } }>({ 0: { x: 1547, track: false }, 1: { x: 1579, track: false }, 2: { x: 1611, track: false }, 3: { x: 1643, track: false }, 4: { x: 1675, track: false }, 5: { x: 1707, track: false }, 6: { x: 1739, track: false }, 7: { x: 1771, track: false }, 8: { x: 1803, track: false }, 9: { x: 1835, track: false } });
+  const [positions, setPositions] = useState<{ [key: number]: { track: boolean, x: number } }>({});
+  const [lastBeadDragged, setLastBeadDragged] = useState<number>(-1); // Track the last bead dragged, for calculating trackBeadsAfterBegin]
 
 
+  const initializePositions = () => {
+      const abacusRect = abacusRef.current?.getBoundingClientRect();
+    const width = abacusRect?.width || 0;
+    let positionDecrement = BEAD_SIZE + PADDING;
+    for (let i = TOTAL_BEADS - 1; i >= 0; i--) {
+      const position = width - positionDecrement;
+      Object.assign(positions, { [i]: { x: position, track: false } });
+      positionDecrement += SPACE_BETWEEN_BEADS;
+    }
+
+  }
 
   useEffect(() => {
     generateRandomNumber();
     initializeBeads();
+    initializePositions();
   }, []);
 
   useEffect(() => {
-
+  console.table(beadPositions)
     // Check if any bead has reached the end and update count
-    if(!draggingBead) return;
-    if (beadPositions[draggingBead].x === positions[beadPositions[draggingBead].id].x && positions[beadPositions[draggingBead].id].track === false) {
+    if(lastBeadDragged === -1) return;
+    if (beadPositions[lastBeadDragged].x === positions[beadPositions[lastBeadDragged].id].x && positions[beadPositions[lastBeadDragged].id].track === false) {
         setCurrentCount(currentCount + 1);
-        setPositions({ ...positions, [beadPositions[draggingBead].id]: { x: positions[beadPositions[draggingBead].id].x, track: true } })
+        setPositions({ ...positions, [beadPositions[lastBeadDragged].id]: { x: positions[beadPositions[lastBeadDragged].id].x, track: true } })
       }
-      if(beadPositions[draggingBead].x !== positions[beadPositions[draggingBead].id].x && positions[beadPositions[draggingBead].id].track === true){
+      if(beadPositions[lastBeadDragged].x !== positions[beadPositions[lastBeadDragged].id].x && positions[beadPositions[lastBeadDragged].id].track === true){
         setCurrentCount(currentCount - 1);
-        setPositions({ ...positions, [beadPositions[draggingBead].id]: { x: positions[beadPositions[draggingBead].id].x, track: false } })
+        setPositions({ ...positions, [beadPositions[lastBeadDragged].id]: { x: positions[beadPositions[lastBeadDragged].id].x, track: false } })
       }
     
-  }, [beadPositions, currentCount, draggingBead, positions]);
+  }, [beadPositions, currentCount, lastBeadDragged, positions]);
 
   const generateRandomNumber = () => {
     const randomNum = Math.floor(Math.random() * (20 - 4 + 1)) + 4;
@@ -61,6 +74,7 @@ const AbacusLevel: React.FC<{color: string}> = ({color}) => {
 
   const handleMouseDown = (index: number) => (event: React.MouseEvent) => {
     setDraggingBead(index);
+    setLastBeadDragged(index);
     const offsetX = event.clientX - beadPositions[index].x; // Calculate offset from bead position
     setMouseOffsetX(offsetX);
     // Prevent default to avoid text selection
@@ -72,7 +86,7 @@ const AbacusLevel: React.FC<{color: string}> = ({color}) => {
       const abacusRect = abacusRef.current?.getBoundingClientRect();
       if (abacusRect) {
         const newBeadPositions = [...beadPositions];
-        let newX = event.clientX - abacusRect.left - mouseOffsetX / 2; // Adjust for mouse offset
+        let newX = event.clientX - abacusRect.left; // Adjust for mouse offset
 
         // Ensure beads do not collide or jump over each other
         const draggingIndex = draggingBead;
@@ -131,7 +145,7 @@ const AbacusLevel: React.FC<{color: string}> = ({color}) => {
             onMouseDown={handleMouseDown(index)}
             style={{ left: bead.x, backgroundColor: color }}
           >
-            <p className="bead-number">{index + 1}</p>
+
           </div>
         ))}
       </div>

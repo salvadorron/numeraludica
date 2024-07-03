@@ -20,7 +20,7 @@
   justify-content: flex-start; /* Ensure beads are aligned to the left */
   align-items: center;
   height: 50px; /* Reduce height for better display */
-  width: 100%; /* Occupy full width */
+  width: 60%; /* Occupy full width */
   margin: 0 auto;
   padding: 0 15px;
   overflow: hidden; /* Ensure beads don't overflow */
