@@ -250,7 +250,7 @@ export default function LevelOne() {
 
                 if (nextCorrect === correct.limit) {
                     worlProvider.onFinish({
-                        summary: 34,
+                        summary: Math.floor((life.current / 3) * 10),
                         showSummary: true
                     })
                 }

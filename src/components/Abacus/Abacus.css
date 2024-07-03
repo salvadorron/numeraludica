@@ -1,12 +1,23 @@
 .abacus-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   padding: 20px;
+  gap: 20px;
 }
-
-.target-number,
 .current-count {
+  border-radius: 10px;
+  padding: 5px;
+  display: flex;
+  direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #a52a2a;
+  color: rgba(165, 42, 42, 0.5);
+  font-weight: bold;
   font-size: 24px;
-  
 }
 
 
@@ -14,14 +25,12 @@
   border: 2px solid #a52a2a;
   border-radius: 10px;
   padding: 10px;
-  margin-bottom: 20px;
   position: relative;
   display: flex;
   justify-content: flex-start; /* Ensure beads are aligned to the left */
   align-items: center;
   height: 50px; /* Reduce height for better display */
   width: 60%; /* Occupy full width */
-  margin: 0 auto;
   padding: 0 15px;
   overflow: hidden; /* Ensure beads don't overflow */
 }
