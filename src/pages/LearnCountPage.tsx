@@ -7,9 +7,9 @@ import WorldProvider from "../components/World/WorldProvider";
 export default function LearnCountPage() {
 
     return <WorldProvider>
+        <CardCounter />
         <AbacusCounter />
         <TracerNumbers />    
-        <CardCounter />
         <FinishScore />
     </WorldProvider>
 }

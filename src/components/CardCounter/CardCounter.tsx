@@ -8,6 +8,7 @@ import { Box, Image, Tooltip,
     AlertDialogOverlay,
     Divider,
     Text,
+    Stack,
     Flex,
     useDisclosure } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
@@ -19,7 +20,8 @@ import Background from '../Board/Background';
 import { WorldContext } from '../World/WorldProvider';
 import './CardCounter.css'
 import fruits from '../../assets/fruits/fruits.json';
-import { PiGameControllerFill, PiArrowLineLeftLight } from 'react-icons/pi';
+import { PiGameControllerFill } from 'react-icons/pi';
+import { FaHandsHelping } from 'react-icons/fa';
 
 
 const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
@@ -355,6 +357,11 @@ export default function CardCounter() {
                                     </Droppable>
                                 ))}
                         </div>
+                        <Box className='status'>
+                            <Stack direction="row" justifyContent="center">
+                            <Button leftIcon={<FaHandsHelping/>} onClick={openHelp} colorScheme='red' variant={'solid'}>Ayuda</Button>
+                            </Stack>
+                        </Box>
                     </div>
                 </div>
                 <Box className={"table_question"} maxH='sm'>
@@ -398,22 +405,19 @@ export default function CardCounter() {
                     <AlertDialogOverlay>
                         <AlertDialogContent>
                         <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                            ¡PRIMERA ACTIVIDAD!
+                            JUEGO 1: MAZO DE CARTAS
                         </AlertDialogHeader>
                         <AlertDialogBody>
                             <Flex direction='column' gap={4}>
-                                <Text>En esta primera actividad deberás relacionar la cantidad de cada objeto en el tablero con un número en el panel derecho, para interactuar puedes arrastrar el número que creas desde el panel hacia la figura correspondiente en la parte inferior.</Text>
+                                <Text>En esta primera actividad deberás relacionar la cantidad de cada objeto en el tablero con un número en el panel derecho, para interactuar puedes arrastrar el número que creas es la respuesta desde el panel hacia la figura correspondiente en la parte inferior.</Text>
                                 <Text fontWeight='bold'>Pero recuerda, tienes a tu disposición tres intentos, tras llevar a cabo cada uno de ellos deberías empezar desde el principio.</Text>
                             </Flex>
                         </AlertDialogBody>    
                         <Divider sx={{ width: "auto" }} mx={8} marginTop={4} />
                         <AlertDialogFooter>
-                            <Button onClick={closeHelp} variant="ghost" leftIcon={<PiArrowLineLeftLight/>}>
-                            Volver
-                        </Button>
-                        <Button bgColor="#82c8a6" _hover={{ backgroundColor: '#212962', color: 'white' }} onClick={closeHelp} ml={3} rightIcon={<PiGameControllerFill/>}>
-                            ¡EMPEZAR!
-                        </Button>
+                            <Button bgColor="#82c8a6" _hover={{ backgroundColor: '#212962', color: 'white' }} onClick={closeHelp} ml={3} rightIcon={<PiGameControllerFill/>}>
+                                ¡EMPEZAR!
+                            </Button>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                     </AlertDialogOverlay>

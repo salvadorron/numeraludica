@@ -13,7 +13,8 @@ import { Box, Button, Flex, Stack, Text, Spacer, AlertDialog,
 import useModal from '../../ctx';
 import { useNavigate } from 'react-router-dom';
 import { WorldContext } from '../World/WorldProvider';
-import { PiGameControllerFill, PiArrowLineLeftLight } from 'react-icons/pi';
+import { PiGameControllerFill } from 'react-icons/pi';
+import { FaHandsHelping } from 'react-icons/fa';
 
 const TOTAL_BEADS = 10;
 const BEAD_SIZE = 30;
@@ -277,8 +278,13 @@ function closeHelp () {
                 </Box>
               </Box>
               <Box className='status'>
-                <Stack direction="row" justifyContent="center">
+                <Flex direction="column" justifyContent="center">
                   <Button onClick={handleCheck} colorScheme='teal' variant={'outline'}>Validar respuestas</Button>
+                </Flex>
+              </Box>
+              <Box className='status'>
+                <Stack direction="row" justifyContent="center">
+                  <Button leftIcon={<FaHandsHelping/>} onClick={openHelp} colorScheme='red' variant={'solid'}>Ayuda</Button>
                 </Stack>
               </Box>
             </Flex>
@@ -293,22 +299,19 @@ function closeHelp () {
               <AlertDialogOverlay>
                   <AlertDialogContent>
                   <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                      ¡SEGUNDA ACTIVIDAD!
+                      JUEGO 2: ÁBACO INTERACTIVO
                   </AlertDialogHeader>
                   <AlertDialogBody>
                       <Flex direction='column' gap={4}>
-                          <Text>En esta segunda actividad debes mediante el ábaco que tienes a tu disposición arrastras las esferas hacia el lado derecho según el número correspondiente a cada fila.</Text>
+                          <Text>En esta segunda actividad mediante el ábaco que tienes a tu disposición arrastras las esferas hacia el lado derecho según el número correspondiente a cada fila, una vez ya tengas tu respuesta presionas el botón "VALIDAR RESPUESTAS" y así podrás saber si todo es válido.</Text>
                           <Text fontWeight='bold'>Pero recuerda, tienes a tu disposición tres intentos, tras llevar a cabo cada uno de ellos deberías empezar desde el principio.</Text>
                       </Flex>
                   </AlertDialogBody>    
                   <Divider sx={{ width: "auto" }} mx={8} marginTop={4} />
                   <AlertDialogFooter>
-                      <Button onClick={closeHelp} variant="ghost" leftIcon={<PiArrowLineLeftLight/>}>
-                      Volver
-                  </Button>
-                  <Button bgColor="#82c8a6" _hover={{ backgroundColor: '#212962', color: 'white' }} onClick={closeHelp} ml={3} rightIcon={<PiGameControllerFill/>}>
-                      ¡CONTINUAR!
-                  </Button>
+                    <Button bgColor="#82c8a6" _hover={{ backgroundColor: '#212962', color: 'white' }} onClick={closeHelp} ml={3} rightIcon={<PiGameControllerFill/>}>
+                        ¡CONTINUAR!
+                    </Button>
                   </AlertDialogFooter>
               </AlertDialogContent>
               </AlertDialogOverlay>

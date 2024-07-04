@@ -4,6 +4,23 @@ import './TracerNumbers.css';
 import useModal from '../../ctx';
 import { useNavigate } from 'react-router-dom';
 import { WorldContext } from '../World/WorldProvider';
+import { Box, Image, Tooltip,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  Button,
+  AlertDialogOverlay,
+  Divider,
+  Text,
+  Flex,
+  Spacer,
+  Stack,
+  useDisclosure 
+} from '@chakra-ui/react';
+import { PiGameControllerFill } from 'react-icons/pi';
+import { FaHandsHelping } from 'react-icons/fa'; 
 
 type Line = {
   x: number,
@@ -41,6 +58,9 @@ const TracerNumbers = () => {
   const worlProvider = useContext(WorldContext)
   const modal = useModal()
   const router = useNavigate()  
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const ref = useRef<HTMLButtonElement>(null)
+  const [ openedHelp, setOpenedHelp ] = useState(true); 
   useEffect(() => {
     generateRectangles();
   }, []);
@@ -85,6 +105,10 @@ const TracerNumbers = () => {
     }
     setRectangles(rects);
   };
+
+  useEffect(() => {
+    openHelp();
+}, [])
 
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
     if (isTracingComplete) return; // Evitar nuevo trazado si ya se completó
@@ -180,6 +204,16 @@ const TracerNumbers = () => {
     });
   };
 
+  function openHelp () {
+    setOpenedHelp(true);
+    onOpen();    
+}
+
+  function closeHelp () {
+    setOpenedHelp(false);
+    onClose();    
+}
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
@@ -225,19 +259,65 @@ const TracerNumbers = () => {
 
   return (
     <Background>
-      <div className='tracer-numbers-container' style={{ zIndex: 1 }}>
-        <div className="tracer-status">Intentos Restantes: {lifes}</div>
-        <div className='tracer-border'>
-          <canvas
-            ref={canvasRef}
-            width={800}
-            height={600}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-          />
+      <Box paddingTop={8}>
+      <Flex direction='row' justifyContent='center' gap={24}>
+        <div className='tracer-numbers-container'>
+          <div className='tracer-border'>
+            <canvas
+              ref={canvasRef}
+              width={800}
+              height={600}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+            />
+          </div>
         </div>
-      </div>
+        <Flex direction='column' gap={2}>
+          <Box className='status'>
+            <p className='status_description'  style={{color: lifes > 1 ? '#3bb150' : '#a52228'}}>{lifes}</p>
+            <Box>
+              <p className='status_title'>Intentos</p>
+              <p className='status_title'> restantes</p>
+            </Box>
+          </Box>
+          <Box className='status'>
+            <Stack direction="row" justifyContent="center">
+              <Button leftIcon={<FaHandsHelping/>} onClick={openHelp} colorScheme='red' variant={'solid'}>Ayuda</Button>
+            </Stack>
+          </Box>
+        </Flex>
+      </Flex>
+      {openedHelp &&  <>
+        <AlertDialog
+            isOpen={isOpen}
+            size={'3xl'}
+            leastDestructiveRef={ref}
+            onClose={closeHelp}
+        >
+            <AlertDialogOverlay>
+                <AlertDialogContent>
+                <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                    JUEGO 3: TRAZADOR DE NÚMEROS
+                </AlertDialogHeader>
+                <AlertDialogBody>
+                    <Flex direction='column' gap={4}>
+                        <Text>En esta tercera actividad deberás reconocer cada número y trazar con tu ratón desde el número 1 hasta el número 10.</Text>
+                        <Text fontWeight='bold'>Pero recuerda, tienes a tu disposición tres intentos, tras llevar a cabo cada uno de ellos deberás empezar desde el principio.</Text>
+                    </Flex>
+                </AlertDialogBody>    
+                <Divider sx={{ width: "auto" }} mx={8} marginTop={4} />
+                <AlertDialogFooter>
+                  <Button bgColor="#82c8a6" _hover={{ backgroundColor: '#212962', color: 'white' }} onClick={closeHelp} ml={3} rightIcon={<PiGameControllerFill/>}>
+                      ¡EMPEZAR!
+                  </Button>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+            </AlertDialogOverlay>
+        </AlertDialog>
+        </>
+      }     
+      </Box>
     </Background>
   );
 };

@@ -1,5 +1,9 @@
+.container {
+    margin: 2em 2em;
+    z-index: 5;
+}
+
 .tracer-numbers-container{
-    height: 100vh;
     display: flex;
     flex-direction: column;
     gap: 25px;
@@ -10,7 +14,8 @@
 .tracer-border {
     padding: 30px;
     box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.3);
-    background: #b17c54;
+    background: white;
+    border-color: #000;
     border-radius: 25px;
 }
 

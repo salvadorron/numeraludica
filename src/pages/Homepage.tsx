@@ -19,7 +19,7 @@ import {
     AlertDialogOverlay,
     Divider,
     useDisclosure
-  } from '@chakra-ui/react'
+} from '@chakra-ui/react'
 
 export default function HomePage() {
     const colors = ["#212962", "#e5c86d", "#b4b1cc", "#a52228"]
