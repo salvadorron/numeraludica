@@ -298,11 +298,11 @@ const TracerNumbers = () => {
             <AlertDialogOverlay>
                 <AlertDialogContent>
                 <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                    JUEGO 3: TRAZADOR DE NÚMEROS
+                    ACTIVIDAD 2: TRAZO DE NUMEROS
                 </AlertDialogHeader>
                 <AlertDialogBody>
                     <Flex direction='column' gap={4}>
-                        <Text>En esta tercera actividad deberás reconocer cada número y trazar con tu ratón desde el número 1 hasta el número 10.</Text>
+                        <Text>En esta segunda actividad deberás reconocer cada número y trazar con tu ratón desde el número 1 hasta el número 10.</Text>
                         <Text fontWeight='bold'>Pero recuerda, tienes a tu disposición tres intentos, tras llevar a cabo cada uno de ellos deberás empezar desde el principio.</Text>
                     </Flex>
                 </AlertDialogBody>    

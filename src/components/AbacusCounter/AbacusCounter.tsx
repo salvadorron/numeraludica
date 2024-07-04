@@ -299,11 +299,11 @@ function closeHelp () {
               <AlertDialogOverlay>
                   <AlertDialogContent>
                   <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                      JUEGO 2: ÁBACO INTERACTIVO
+                      ACTIVIDAD 1: ÁBACO INTERACTIVO
                   </AlertDialogHeader>
                   <AlertDialogBody>
                       <Flex direction='column' gap={4}>
-                          <Text>En esta segunda actividad mediante el ábaco que tienes a tu disposición arrastras las esferas hacia el lado derecho según el número correspondiente a cada fila, una vez ya tengas tu respuesta presionas el botón "VALIDAR RESPUESTAS" y así podrás saber si todo es válido.</Text>
+                          <Text>En esta primera actividad mediante el ábaco que tienes a tu disposición, arrastraras las esferas hacia el lado derecho según el número correspondiente a cada fila, una vez ya tengas tu respuesta presionas el botón "VALIDAR RESPUESTAS" y así podrás saber si todo es válido.</Text>
                           <Text fontWeight='bold'>Pero recuerda, tienes a tu disposición tres intentos, tras llevar a cabo cada uno de ellos deberías empezar desde el principio.</Text>
                       </Flex>
                   </AlertDialogBody>    

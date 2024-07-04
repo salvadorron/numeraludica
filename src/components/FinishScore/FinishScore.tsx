@@ -9,10 +9,12 @@ import { FaHome } from "react-icons/fa";
 
 const FinishScore = () => {
     const [typeEffect] = useTypewriter({
-        words: ['Puntaje final:'],
+        words: ['Puntaje total:'],
         typeSpeed: 100
     })
-    const worlProvider = useContext(WorldContext)
+    const worlProvider = useContext(WorldContext);
+    const points = worlProvider.getPointList();
+    console.log(points)
     return (
         <Background>
         <Flex justifyContent='center' paddingTop={24}>
@@ -32,11 +34,16 @@ const FinishScore = () => {
                         {worlProvider.getSummary()}
                     </Text>
                 </Flex>
-                <Flex direction='column' justifyContent='center' alignContent='center' alignItems='center' gap={4}>
+                <Flex direction='column' alignItems='left' justifyContent='left' alignContent='left'>
+                    <Text fontSize="xl" fontWeight='semibold'>Puntaje de nivel 1: {points[0]}</Text>
+                    <Text fontSize="xl" fontWeight='semibold'>Puntaje de nivel 2: {points[1]}</Text>
+                    <Text fontSize="xl" fontWeight='semibold'>Puntaje de nivel 3: {points[2]}</Text>
+                </Flex>
+                <Flex  marginBottom={4} direction='column' justifyContent='center' alignContent='center' alignItems='center' gap={4}>
+                    <Text fontSize="2xl" fontWeight='semibold'>¡Gracias por participar en Numeralúdica!</Text>
                     <Link to='/'>
                         <Button leftIcon={<FaHome/>} colorScheme='blue' variant={'solid'}>Inicio</Button>
                     </Link>
-                    <Text fontSize="2xl" fontWeight='semibold'>¡Gracias por participar en Numeralúdica!</Text>
                 </Flex>
             </Flex>
         </Flex>

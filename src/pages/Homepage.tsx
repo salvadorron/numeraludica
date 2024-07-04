@@ -63,6 +63,7 @@ export default function HomePage() {
                     display="flex"
                     gap={4}
                     marginTop={6}
+                    marginBottom={8}
                 >
                     <Text
                         color="#000000"
@@ -85,7 +86,7 @@ export default function HomePage() {
                 </Box>
                 <Menu>
                     <Menu.Option icon={PiGameControllerFill} bgColor="#ffdf7a" type="primary" name="Empezar" onClick={handleGame} />
-                    <Menu.Option icon={MdScoreboard} bgColor="#82c8a6" type="secondary" name="Puntaje" href="puntaje" />
+                    {/* <Menu.Option icon={MdScoreboard} bgColor="#82c8a6" type="secondary" name="Puntaje" href="puntaje" /> */}
                     <Menu.Option icon={FaHandsHelping} bgColor="#be3b41" type="secondary" name="Ayuda" href="ayuda" />
                 </Menu>
                 {game &&  <>

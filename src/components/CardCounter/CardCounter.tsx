@@ -299,7 +299,6 @@ export default function CardCounter() {
         initialGame();
     }, [])
 
-
     if (itemList.length < 3) return
     return <Background>
         <div className={"mainframe"}>
@@ -405,11 +404,11 @@ export default function CardCounter() {
                     <AlertDialogOverlay>
                         <AlertDialogContent>
                         <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                            JUEGO 1: MAZO DE CARTAS
+                            ACTIVIDAD 3: MAZO DE CARTAS
                         </AlertDialogHeader>
                         <AlertDialogBody>
                             <Flex direction='column' gap={4}>
-                                <Text>En esta primera actividad deberás relacionar la cantidad de cada objeto en el tablero con un número en el panel derecho, para interactuar puedes arrastrar el número que creas es la respuesta desde el panel hacia la figura correspondiente en la parte inferior.</Text>
+                                <Text>En la última actividad que te ofrece Numeralúdica deberás relacionar la cantidad de cada objeto en el tablero con un número en el panel derecho, para interactuar puedes arrastrar el número que creas es la respuesta desde el panel hacia la figura correspondiente en la parte inferior.</Text>
                                 <Text fontWeight='bold'>Pero recuerda, tienes a tu disposición tres intentos, tras llevar a cabo cada uno de ellos deberías empezar desde el principio.</Text>
                             </Flex>
                         </AlertDialogBody>    
