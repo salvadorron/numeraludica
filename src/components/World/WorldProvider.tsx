@@ -20,25 +20,33 @@ interface WorldProps {
      * this method provides a dialog for current summary to world 
      * @param isShow a boolean expression
      */
-    onShowSummary: (isShow: boolean) => void
+    onShowSummary: (isShow: boolean) => void,
+    /**
+     * this method returns the current accumulated points
+     * @param points a numeric expression
+     */
+    getPoints: () => number
 }
 
 export const WorldContext = createContext<WorldProps>({
     onFinish: () => null,
     getStep: () => 0,
     getSummary: () => 0,
-    onShowSummary: () => null
+    onShowSummary: () => null,
+   getPoints: () => 0
 })
 
 export default function WorldProvider({ children }: { children: React.ReactElement[] }) {
 
     const [currentSummary, setSummary] = useState<number>(0)
+    const [currentPoint, setCurrentPoint] = useState<number>(0)
     const [showSummary, setShowSummary] = useState<boolean>(false)
     const [step, setStep] = useState(0);
 
     function onFinish({ summary, showSummary = false }: { summary: number, showSummary?: boolean }) {
         setShowSummary(showSummary)
         setStep(step + 1)
+        setCurrentPoint(summary)
         setSummary(currentSummary + summary)
     }
 
@@ -54,13 +62,18 @@ export default function WorldProvider({ children }: { children: React.ReactEleme
         setShowSummary(isShow)
     }
 
+    function getPoints() {
+        return currentPoint
+    } 
+
 
     return (
         <WorldContext.Provider value={{
             onFinish,
             getStep,
             getSummary,
-            onShowSummary
+            onShowSummary,
+            getPoints
         }}>
             <SummaryComponent isShow={showSummary}>
                 {children[step]}
