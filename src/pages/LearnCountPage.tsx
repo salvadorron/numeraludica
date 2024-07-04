@@ -1,8 +1,8 @@
-import { useContext } from "react";
-import WorldProvider, { WorldContext } from "../components/World/WorldProvider";
 import CardCounter from "../components/CardCounter/CardCounter";
 import TracerNumbers from "../components/TracerNumbers/TracerNumbers";
 import AbacusCounter from "../components/AbacusCounter/AbacusCounter";
+import FinishScore from "../components/FinishScore/FinishScore";
+import WorldProvider from "../components/World/WorldProvider";
 
 export default function LearnCountPage() {
 
@@ -10,13 +10,6 @@ export default function LearnCountPage() {
         <AbacusCounter />
         <TracerNumbers />    
         <CardCounter />
-        <ExampleComponent />
+        <FinishScore />
     </WorldProvider>
 }
-
-const ExampleComponent = () => {
-    const worlProvider = useContext(WorldContext)
-
-    return <p>{worlProvider.getSummary()}</p>
-}
-
