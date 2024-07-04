@@ -26,6 +26,11 @@ interface WorldProps {
      * @param points a numeric expression
      */
     getPoints: () => number
+    /**
+     * this method returns a list of accumulated points per world
+     * @param points a numeric expression
+     */
+   getPointList: () => number[]
 }
 
 export const WorldContext = createContext<WorldProps>({
@@ -33,13 +38,15 @@ export const WorldContext = createContext<WorldProps>({
     getStep: () => 0,
     getSummary: () => 0,
     onShowSummary: () => null,
-   getPoints: () => 0
+   getPoints: () => 0,
+   getPointList: () => []
 })
 
 export default function WorldProvider({ children }: { children: React.ReactElement[] }) {
 
     const [currentSummary, setSummary] = useState<number>(0)
     const [currentPoint, setCurrentPoint] = useState<number>(0)
+    const [pointList, setPointList] = useState<number[]>([])
     const [showSummary, setShowSummary] = useState<boolean>(false)
     const [step, setStep] = useState(0);
 
@@ -47,6 +54,7 @@ export default function WorldProvider({ children }: { children: React.ReactEleme
         setShowSummary(showSummary)
         setStep(step + 1)
         setCurrentPoint(summary)
+        setPointList([...pointList, summary])
         setSummary(currentSummary + summary)
     }
 
@@ -64,7 +72,11 @@ export default function WorldProvider({ children }: { children: React.ReactEleme
 
     function getPoints() {
         return currentPoint
-    } 
+    }
+
+    function getPointList(){
+      return pointList
+  }
 
 
     return (
@@ -73,7 +85,8 @@ export default function WorldProvider({ children }: { children: React.ReactEleme
             getStep,
             getSummary,
             onShowSummary,
-            getPoints
+            getPoints,
+            getPointList
         }}>
             <SummaryComponent isShow={showSummary}>
                 {children[step]}
