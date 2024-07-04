@@ -1,6 +1,17 @@
-import { Box, Image, Tooltip } from '@chakra-ui/react';
+import { Box, Image, Tooltip,
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogContent,
+    Button,
+    AlertDialogOverlay,
+    Divider,
+    Text,
+    Flex,
+    useDisclosure } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
 import { DragDropContext, Draggable, DropResult, Droppable, ResponderProvided } from 'react-beautiful-dnd';
 import { useNavigate } from 'react-router-dom';
 import useModal from '../../ctx';
@@ -8,6 +19,7 @@ import Background from '../Board/Background';
 import { WorldContext } from '../World/WorldProvider';
 import styles from './levelone.module.css';
 import fruits from '../../assets/fruits/fruits.json';
+import { PiGameControllerFill, PiArrowLineLeftLight } from 'react-icons/pi';
 
 
 const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
@@ -70,6 +82,12 @@ export default function LevelOne() {
     const modal = useModal()
 
     const worlProvider = useContext(WorldContext)
+
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
+    const ref = useRef<HTMLButtonElement>(null)
+
+    const [ openedHelp, setOpenedHelp ] = useState(true); 
 
     const router = useNavigate()
 
@@ -166,7 +184,6 @@ export default function LevelOne() {
         const randomAllList = [...listPoke1, ...listPoke2, ...listPoke3].sort(() => Math.random() - 0.5)
 
         const groupRandomAllList = groupBy(randomAllList, i => i.name)
-        console.log(groupRandomAllList)
         const sourceList = Object.keys(groupRandomAllList).map(item => {
             const name = item;
             const length = groupRandomAllList[item].length;
@@ -199,7 +216,17 @@ export default function LevelOne() {
     }
 
     async function initialGame() {
-        await initialBoard()
+        await initialBoard();
+    }
+
+    function openHelp () {
+        setOpenedHelp(true);
+        onOpen();    
+    }
+
+    function closeHelp () {
+        setOpenedHelp(false);
+        onClose();    
     }
 
     function isGetOver() {
@@ -266,7 +293,8 @@ export default function LevelOne() {
 
 
     useEffect(() => {
-        initialGame()
+        openHelp();
+        initialGame();
     }, [])
 
 
@@ -360,6 +388,38 @@ export default function LevelOne() {
                     </div>
                 </Box>
             </DragDropContext>
+            {openedHelp &&  <>
+                <AlertDialog
+                    isOpen={isOpen}
+                    size={'3xl'}
+                    leastDestructiveRef={ref}
+                    onClose={closeHelp}
+                >
+                    <AlertDialogOverlay>
+                        <AlertDialogContent>
+                        <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                            ¡PRIMERA ACTIVIDAD!
+                        </AlertDialogHeader>
+                        <AlertDialogBody>
+                            <Flex direction='column' gap={4}>
+                                <Text>En esta primera actividad deberás relacionar la cantidad de cada objeto en el tablero con un número en el panel derecho, para interactuar puedes arrastrar el número que creas desde el panel hacia la figura correspondiente en la parte inferior.</Text>
+                                <Text fontWeight='bold'>Pero recuerda, tienes a tu disposición tres intentos, tras llevar a cabo cada uno de ellos deberías empezar desde el principio.</Text>
+                            </Flex>
+                        </AlertDialogBody>    
+                        <Divider sx={{ width: "auto" }} mx={8} marginTop={4} />
+                        <AlertDialogFooter>
+                            <Button onClick={closeHelp} variant="ghost" leftIcon={<PiArrowLineLeftLight/>}>
+                            Volver
+                        </Button>
+                        <Button bgColor="#82c8a6" _hover={{ backgroundColor: '#212962', color: 'white' }} onClick={closeHelp} ml={3} rightIcon={<PiGameControllerFill/>}>
+                            ¡EMPEZAR!
+                        </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                    </AlertDialogOverlay>
+                </AlertDialog>
+                </>
+            }       
         </div>
     </Background>
 }

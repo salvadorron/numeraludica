@@ -1,12 +1,24 @@
+.container {
+  margin: 2em 2em;
+  z-index: 5;
+}
+
 .abacus-container {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
   text-align: center;
+  margin-left: 4em;
   padding: 20px;
   gap: 20px;
 }
+
+.abacus-div {
+  border: 4px solid #b17c54;
+  padding: 2em;
+  border-radius: 2em;
+  background-color: #c69b7c;
+}
+
 .current-count {
   border-radius: 10px;
   padding: 5px;
@@ -14,15 +26,18 @@
   direction: row;
   justify-content: center;
   align-items: center;
-  border: 2px solid #a52a2a;
+  border: 2px solid #7f6552;
   color: rgba(165, 42, 42, 0.5);
   font-weight: bold;
   font-size: 24px;
 }
 
+.custom-divider {
+  border: 4px solid #b17c54;
+  width: 100%;
+}
 
 .abacus {
-  border: 2px solid #a52a2a;
   border-radius: 10px;
   padding: 10px;
   position: relative;
@@ -30,7 +45,7 @@
   justify-content: flex-start; /* Ensure beads are aligned to the left */
   align-items: center;
   height: 50px; /* Reduce height for better display */
-  width: 60%; /* Occupy full width */
+  width: 80%; /* Occupy full width */
   padding: 0 15px;
   overflow: hidden; /* Ensure beads don't overflow */
 }
@@ -54,3 +69,29 @@
 
 
 /*bead goal is a div inside the abacus container*/
+
+.status {
+  width: 14em;
+  height: 5em;
+  display: flex;
+  gap: 0.5em;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  border-radius: 5px;
+  background: #ffdf7a;
+  border: 2px solid #ffdf7a;
+}
+
+.status_title {
+  font-size: medium;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: Montserrat;
+}
+
+.status_description {
+  font-size: xxx-large;
+  font-family: Montserrat;
+  font-weight: 500;
+}

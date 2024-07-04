@@ -1,10 +1,19 @@
 import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef, useContext } from 'react';
 import './Abacus.css';
 import Background from '../Board/Background';
-import { Box, Button, Flex, Stack, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Stack, Text, Spacer, AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  Divider,
+  useDisclosure 
+} from '@chakra-ui/react';
 import useModal from '../../ctx';
 import { useNavigate } from 'react-router-dom';
 import { WorldContext } from '../World/WorldProvider';
+import { PiGameControllerFill, PiArrowLineLeftLight } from 'react-icons/pi';
 
 const TOTAL_BEADS = 10;
 const BEAD_SIZE = 30;
@@ -37,10 +46,6 @@ const AbacusLevel = forwardRef<AbacusRef, AbacusProps>(({ color, again }, ref) =
     const [positions, setPositions] = useState<{ [key: number]: { track: boolean, x: number } }>({});
     const [lastBeadDragged, setLastBeadDragged] = useState<number>(-1); // Track the last bead dragged, for calculating trackBeadsAfterBegin]
   
-
-  
-
-  
     const initializePositions = () => {
       const abacusElement = abacusRef.current;
       const abacusWidth = abacusElement?.getBoundingClientRect().width || 0;
@@ -60,6 +65,7 @@ const AbacusLevel = forwardRef<AbacusRef, AbacusProps>(({ color, again }, ref) =
       initializeBeads();
       initializePositions();
     }, [again]);
+
   
     useEffect(() => {
       // Check if any bead has reached the end and update count
@@ -158,6 +164,7 @@ const AbacusLevel = forwardRef<AbacusRef, AbacusProps>(({ color, again }, ref) =
     return (
       <div className="abacus-container">
         <div className="abacus" ref={abacusRef} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
+          <div className='custom-divider'></div>
           {beadPositions.map((bead, index) => (
             <div
               key={index}
@@ -185,9 +192,28 @@ const AbacusLevelReplica: React.FC = () => {
   });
   const [againCount, setAgainCount] = useState<number>(0);
 
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const modalRef = useRef<HTMLButtonElement>(null)
+
+  const [ openedHelp, setOpenedHelp ] = useState(true); 
 
   const modal = useModal()
   const router = useNavigate()
+
+  useEffect(() => {
+    openHelp();
+  }, [])
+  
+  function openHelp () {
+    setOpenedHelp(true);
+    onOpen();    
+  }
+
+function closeHelp () {
+    setOpenedHelp(false);
+    onClose();    
+}
 
   const abacusList: {color: string, ref: React.RefObject<AbacusRef>}[] = [{color: "#ce453f", ref: React.createRef()}, {color: "#9b486b", ref: React.createRef()}, {color: "#0086a3", ref: React.createRef()}, {color: "#2cc050", ref: React.createRef()}]
 
@@ -235,17 +261,60 @@ const AbacusLevelReplica: React.FC = () => {
   return (
     <Background>
         <Flex direction='column'>
-          <Stack direction="row" justifyContent="center">
-            <Box width="50%" textAlign="center">
-              <Text fontSize="4xl">Intentos restantes: {attempts.lose.current}</Text>
+          <Stack direction='row' className='container'>
+            <Box width='80%' className='abacus-div'>
+              {abacusList.map(abacus => (
+                <AbacusLevel key={abacus.color} color={abacus.color} ref={abacus.ref} again={againCount}/>
+              ))}
             </Box>
+            <Spacer />
+            <Flex direction='column' gap={2}>
+              <Box className='status'>
+                <p className='status_description'  style={{color: attempts.lose.current > 1 ? '#3bb150' : '#a52228'}}>{attempts.lose.current}</p>
+                <Box>
+                  <p className='status_title'>Intentos</p>
+                  <p className='status_title'> restantes</p>
+                </Box>
+              </Box>
+              <Box className='status'>
+                <Stack direction="row" justifyContent="center">
+                  <Button onClick={handleCheck} colorScheme='teal' variant={'outline'}>Validar respuestas</Button>
+                </Stack>
+              </Box>
+            </Flex>
           </Stack>
-          {abacusList.map(abacus => (
-            <AbacusLevel key={abacus.color} color={abacus.color} ref={abacus.ref} again={againCount}/>
-          ))}
-        <Stack direction="row" justifyContent="center">
-          <Button onClick={handleCheck} colorScheme='teal' variant={'outline'}>Validar</Button>
-        </Stack>
+        {openedHelp &&  <>
+          <AlertDialog
+              isOpen={isOpen}
+              size={'3xl'}
+              leastDestructiveRef={modalRef}
+              onClose={closeHelp}
+          >
+              <AlertDialogOverlay>
+                  <AlertDialogContent>
+                  <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                      ¡SEGUNDA ACTIVIDAD!
+                  </AlertDialogHeader>
+                  <AlertDialogBody>
+                      <Flex direction='column' gap={4}>
+                          <Text>En esta segunda actividad debes mediante el ábaco que tienes a tu disposición arrastras las esferas hacia el lado derecho según el número correspondiente a cada fila.</Text>
+                          <Text fontWeight='bold'>Pero recuerda, tienes a tu disposición tres intentos, tras llevar a cabo cada uno de ellos deberías empezar desde el principio.</Text>
+                      </Flex>
+                  </AlertDialogBody>    
+                  <Divider sx={{ width: "auto" }} mx={8} marginTop={4} />
+                  <AlertDialogFooter>
+                      <Button onClick={closeHelp} variant="ghost" leftIcon={<PiArrowLineLeftLight/>}>
+                      Volver
+                  </Button>
+                  <Button bgColor="#82c8a6" _hover={{ backgroundColor: '#212962', color: 'white' }} onClick={closeHelp} ml={3} rightIcon={<PiGameControllerFill/>}>
+                      ¡CONTINUAR!
+                  </Button>
+                  </AlertDialogFooter>
+              </AlertDialogContent>
+              </AlertDialogOverlay>
+          </AlertDialog>
+        </>
+        }   
         </Flex>
     </Background>
   );
