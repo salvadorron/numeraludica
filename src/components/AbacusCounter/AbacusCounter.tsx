@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef, useContext } from 'react';
-import './Abacus.css';
+import './AbacusCounter.css';
 import Background from '../Board/Background';
 import { Box, Button, Flex, Stack, Text, Spacer, AlertDialog,
   AlertDialogBody,
@@ -37,7 +37,7 @@ export interface AbacusProps {
   ref: React.Ref<AbacusRef>;
 }
 
-const AbacusLevel = forwardRef<AbacusRef, AbacusProps>(({ color, again }, ref) => {
+const Abacus = forwardRef<AbacusRef, AbacusProps>(({ color, again }, ref) => {
     const [targetNumber, setTargetNumber] = useState<number>(0);
     const [currentCount, setCurrentCount] = useState<number>(0);
     const [beadPositions, setBeadPositions] = useState<BeadPosition[]>([]);
@@ -182,7 +182,7 @@ const AbacusLevel = forwardRef<AbacusRef, AbacusProps>(({ color, again }, ref) =
   
 })
 
-const AbacusLevelReplica: React.FC = () => {
+const AbacusCounter: React.FC = () => {
 
   const worlProvider = useContext(WorldContext)
 
@@ -264,7 +264,7 @@ function closeHelp () {
           <Stack direction='row' className='container'>
             <Box width='80%' className='abacus-div'>
               {abacusList.map(abacus => (
-                <AbacusLevel key={abacus.color} color={abacus.color} ref={abacus.ref} again={againCount}/>
+                <Abacus key={abacus.color} color={abacus.color} ref={abacus.ref} again={againCount}/>
               ))}
             </Box>
             <Spacer />
@@ -320,4 +320,4 @@ function closeHelp () {
   );
 };
 
-export default AbacusLevelReplica;
+export default AbacusCounter;

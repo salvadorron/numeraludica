@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import useModal from '../../ctx';
 import Background from '../Board/Background';
 import { WorldContext } from '../World/WorldProvider';
-import styles from './levelone.module.css';
+import './CardCounter.css'
 import fruits from '../../assets/fruits/fruits.json';
 import { PiGameControllerFill, PiArrowLineLeftLight } from 'react-icons/pi';
 
@@ -77,7 +77,7 @@ const itemAnimation = {
     }
 }
 
-export default function LevelOne() {
+export default function CardCounter() {
 
     const modal = useModal()
 
@@ -269,9 +269,9 @@ export default function LevelOne() {
                 setDestinationList(arr)
                 const currentSourceList = randomSourceList.filter(currentRandomSourceListItem => currentRandomSourceListItem.name !== element.name)
                 setRandomSourceList(currentSourceList)
-                droppableDestination.classList.add(styles.bounce_correct)
+                droppableDestination.classList.add("bounce_correct")
                 setTimeout(() => {
-                    droppableDestination.classList.remove(styles.bounce_correct)
+                    droppableDestination.classList.remove("bounce_correct")
                 }, 1000)
                 setCorrect({ ...correct, current: nextCorrect })
 
@@ -284,9 +284,9 @@ export default function LevelOne() {
             }
         } else {
             isGetOver()
-            droppableDestination.classList.add(styles.bounce_error)
+            droppableDestination.classList.add("bounce_error")
             setTimeout(() => {
-                droppableDestination.classList.remove(styles.bounce_error)
+                droppableDestination.classList.remove("bounce_error")
             }, 1000)
         }
     }
@@ -300,39 +300,39 @@ export default function LevelOne() {
 
     if (itemList.length < 3) return
     return <Background>
-        <div className={styles.mainframe}>
+        <div className={"mainframe"}>
             <DragDropContext onDragEnd={handleValidate}>
-                <div className={styles.destination_wrapper}>
-                    <motion.div className={styles.destination} variants={boardAnimation} initial='hidden' animate='visible'>
+                <div className={"destination_wrapper"}>
+                    <motion.div className={"destination"} variants={boardAnimation} initial='hidden' animate='visible'>
                         {itemList.map(item => {
                             const splitName = item.name.split("-");
                             const displayName = splitName.join(" ")
                             return(
-                                <motion.div key={item.id} variants={itemAnimation} className={styles.destination_item} style={{ backgroundColor: item.color }}>
-                                    <b className={styles.destination_corner}></b>
+                                <motion.div key={item.id} variants={itemAnimation} className={"destination_item"} style={{ backgroundColor: item.color }}>
+                                    <b className={"destination_corner"}></b>
                                     <Tooltip hasArrow label={displayName.toUpperCase()} placement='bottom-start' bg='#212962' fontSize='md' fontWeight={700}>
-                                        <Image className={styles.destination_image} src={item.url} />
+                                        <Image className={"destination_image"} src={item.url} />
                                     </Tooltip>
                                 </motion.div>
                             )
                         })}
                     </motion.div>
-                    <div className={styles.source}>
-                        <div className={styles.status}>
-                            <p className={styles.status_description} style={{color: life.current > 1 ? '#3bb150' : '#a52228'}}>{life.current}</p>
+                    <div className={"source"}>
+                        <div className={"status"}>
+                            <p className={"status_description"} style={{color: life.current > 1 ? '#3bb150' : '#a52228'}}>{life.current}</p>
                             <div>
-                                <p className={styles.status_title}>Intentos</p>
-                                <p className={styles.status_title}> restantes</p>
+                                <p className={"status_title"}>Intentos</p>
+                                <p className={"status_title"}> restantes</p>
                             </div>
                         </div>
-                        <div className={styles.random_source_wrapper}>
+                        <div className={"random_source_wrapper"}>
                             {randomSourceList
                                 .map((question, index) => 
                                     (
                                     <Droppable droppableId={`droppable-source-${question.name}`} isDropDisabled key={question.name}>
                                         {(provided) => (
                                             <div
-                                                className={styles.droppable_item}
+                                                className={"droppable_item"}
                                                 ref={provided.innerRef}
                                                 {...provided.droppableProps}
                                             >
@@ -340,7 +340,7 @@ export default function LevelOne() {
                                                     {(provided) => (
                                                         <div
                                                             key={index.toString()}
-                                                            className={styles.source_item}
+                                                            className={"source_item"}
                                                             ref={provided.innerRef}
                                                             {...provided.draggableProps}
                                                             {...provided.dragHandleProps}
@@ -357,8 +357,8 @@ export default function LevelOne() {
                         </div>
                     </div>
                 </div>
-                <Box className={styles.table_question} maxH='sm'>
-                    <div className={styles.options}>
+                <Box className={"table_question"} maxH='sm'>
+                    <div className={"options"}>
                         {destinationList.map(item => {
                             const splitName = item.name.split("-");
                             const displayName = splitName.join(" ")
@@ -368,18 +368,18 @@ export default function LevelOne() {
                                         <div
                                             ref={provided.innerRef}
                                             {...provided.droppableProps}
-                                            className={styles.option}
+                                            className={"option"}
                                             id={`destination-${item.name}`}
                                             key={`destination-${item.name}`}
                                         >
                                             <Tooltip hasArrow label={displayName.toUpperCase()} placement='bottom-start' bg='#212962' fontSize='md' fontWeight={700}>
-                                                <div className={item.length === 0 ? styles.option_image_wrapper : styles.option_image_wrapper_correct}>
-                                                        <Image src={item.image} alt="image" className={styles.option_image} />
-                                                        {item.length === 0 ? <p className={styles.option_icon}>?</p> : <p className={styles.option_text}>{item.length}</p>}
+                                                <div className={item.length === 0 ? "option_image_wrapper" : "option_image_wrapper_correct"}>
+                                                        <Image src={item.image} alt="image" className={"option_image"} />
+                                                        {item.length === 0 ? <p className={"option_icon"}>?</p> : <p className={"option_text"}>{item.length}</p>}
                                                 </div>
                                             </Tooltip>
     
-                                            {/* {item.length !== 0 && <div className={styles.source_item} >{item.length}</div>} */}
+                                            {/* {item.length !== 0 && <div className={source_item} >{item.length}</div>} */}
                                         </div>
                                     )}
                                 </Droppable>

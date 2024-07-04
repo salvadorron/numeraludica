@@ -1,0 +1,26 @@
+.tracer-numbers-container{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    justify-content: center;
+    align-items: center;
+}
+
+.tracer-border {
+    padding: 30px;
+    box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.3);
+    background: #b17c54;
+    border-radius: 25px;
+}
+
+.tracer-status {
+    font-size: 24px;  
+    font-weight: 700;
+    color: #000;
+}
+
+canvas {
+    width: 800px;
+    height: 600px;
+}

@@ -1,23 +1,15 @@
 import { useContext } from "react";
-import AbacusLevel from "../components/Abacus/AbacusLevel";
 import WorldProvider, { WorldContext } from "../components/World/WorldProvider";
-import LevelOne from "../components/LearnCount/LevelOne";
-// import TracersNumbers from "../components/TracersNumbers/TracersNumbers";
+import CardCounter from "../components/CardCounter/CardCounter";
+import TracerNumbers from "../components/TracerNumbers/TracerNumbers";
+import AbacusCounter from "../components/AbacusCounter/AbacusCounter";
 
 export default function LearnCountPage() {
 
-    // STRUCTURE:
-
-    // PROVIDER
-    //     WORLCOMPONENT1
-    //     WORLDCOMPONENT2
-    //     WORLDCOMPONENT3
-    // PROVIDER
-
     return <WorldProvider>
-        <AbacusLevel />
-        <LevelOne />
-        {/* <TracersNumbers />     */}
+        <AbacusCounter />
+        <TracerNumbers />    
+        <CardCounter />
         <ExampleComponent />
     </WorldProvider>
 }
