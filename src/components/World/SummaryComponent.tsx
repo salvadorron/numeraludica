@@ -12,6 +12,7 @@ const SummaryComponent = ({ children, isShow = false }: { children: ReactElement
         typeSpeed: 100
     })
     const worldProvider = useContext(WorldContext)
+    const currentPoint = worldProvider.getPoints();
     if (!isShow) return children
     return (
         <Background>
@@ -29,7 +30,7 @@ const SummaryComponent = ({ children, isShow = false }: { children: ReactElement
                             </Text>
                         </Box>
                         <Text fontSize="6xl" fontWeight='semibold'>
-                            {worldProvider.getSummary()}
+                            {currentPoint}
                         </Text>
                     </Flex>
                     <Button rightIcon={<HiPlay/>} onClick={() => worldProvider.onShowSummary(false)} colorScheme='red' variant={'solid'}>Continuar</Button>
