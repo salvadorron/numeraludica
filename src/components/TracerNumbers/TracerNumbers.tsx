@@ -15,12 +15,19 @@ import { Box, Image, Tooltip,
   Divider,
   Text,
   Flex,
-  Spacer,
   Stack,
   useDisclosure 
 } from '@chakra-ui/react';
 import { PiGameControllerFill } from 'react-icons/pi';
 import { FaHandsHelping } from 'react-icons/fa'; 
+import useSound from 'use-sound';
+
+
+// Sounds
+import failure from '../../assets/sounds/failure.mp3'
+import win_level from '../../assets/sounds/win_level.mp3'
+import lose_level from '../../assets/sounds/lose_level.mp3'
+
 
 type Line = {
   x: number,
@@ -51,6 +58,9 @@ const TracerNumbers = () => {
   const [rectangles, setRectangles] = useState<RectState>([]);
   const [lines, setLines] = useState<LineState>([]);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [playFailure] = useSound(failure);
+  const [playLoseLevel] = useSound(lose_level);
+  const [playWinLevel] = useSound(win_level);
   const [path, setPath] = useState<PathState>([]);
   const [isCorrectPath, setIsCorrectPath] = useState(true);
   const [isTracingComplete, setIsTracingComplete] = useState(false); // Nueva variable de estado

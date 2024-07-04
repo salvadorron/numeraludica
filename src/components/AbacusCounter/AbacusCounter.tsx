@@ -15,6 +15,16 @@ import { useNavigate } from 'react-router-dom';
 import { WorldContext } from '../World/WorldProvider';
 import { PiGameControllerFill } from 'react-icons/pi';
 import { FaHandsHelping } from 'react-icons/fa';
+import useSound from 'use-sound';
+
+
+// Sounds
+import get from '../../assets/sounds/abacus/get.mp3'
+import failure from '../../assets/sounds/failure.mp3'
+import win_level from '../../assets/sounds/win_level.mp3'
+import lose_level from '../../assets/sounds/lose_level.mp3'
+
+
 
 const TOTAL_BEADS = 10;
 const BEAD_SIZE = 30;
@@ -39,6 +49,7 @@ export interface AbacusProps {
 }
 
 const Abacus = forwardRef<AbacusRef, AbacusProps>(({ color, again }, ref) => {
+    const [playGetAbacus] = useSound(get);
     const [targetNumber, setTargetNumber] = useState<number>(0);
     const [currentCount, setCurrentCount] = useState<number>(0);
     const [beadPositions, setBeadPositions] = useState<BeadPosition[]>([]);
@@ -100,6 +111,7 @@ const Abacus = forwardRef<AbacusRef, AbacusProps>(({ color, again }, ref) => {
     const handleMouseDown = (index: number) => (event: React.MouseEvent) => {
       setDraggingBead(index);
       setLastBeadDragged(index);
+      playGetAbacus();
       // Prevent default to avoid text selection
       event.preventDefault();
     };
@@ -202,6 +214,10 @@ const AbacusCounter: React.FC = () => {
   const modal = useModal()
   const router = useNavigate()
 
+  const [playFailure] = useSound(failure);
+  const [playLoseLevel] = useSound(lose_level);
+  const [playWinLevel] = useSound(win_level);
+
   useEffect(() => {
     openHelp();
   }, [])
@@ -228,6 +244,7 @@ function closeHelp () {
     if (validate) {
       const nextAttempts = attempts.win.current - 1;
       if(nextAttempts === attempts.win.limit) {
+        playWinLevel();
         worlProvider.onFinish({
           summary: Math.floor((attempts.lose.current / 3) * 10),
           showSummary: true
@@ -236,8 +253,10 @@ function closeHelp () {
     }
     else {
       const nextAttempts = attempts.lose.current - 1;
+      playFailure();
       setAttempts({...attempts, lose: {...attempts.lose, current: nextAttempts}});
       if (nextAttempts === attempts.lose.limit) {
+        playLoseLevel();
         modal({
           title: "Has perdido",
           description: "Has alcanzado el maximo de intentos posibles",
