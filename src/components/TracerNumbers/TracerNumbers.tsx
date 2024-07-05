@@ -24,6 +24,7 @@ import useSound from 'use-sound';
 
 
 // Sounds
+import trazado from '../../assets/sounds/trazer/trazado.mp3'
 import failure from '../../assets/sounds/failure.mp3'
 import win_level from '../../assets/sounds/win_level.mp3'
 import lose_level from '../../assets/sounds/lose_level.mp3'
@@ -58,6 +59,9 @@ const TracerNumbers = () => {
   const [rectangles, setRectangles] = useState<RectState>([]);
   const [lines, setLines] = useState<LineState>([]);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [play, { stop }] = useSound(trazado, {
+    loop: true,
+  });
   const [playFailure] = useSound(failure);
   const [playLoseLevel] = useSound(lose_level);
   const [playWinLevel] = useSound(win_level);
@@ -125,10 +129,12 @@ const TracerNumbers = () => {
     const { offsetX, offsetY } = e.nativeEvent;
     setLines([[{ x: offsetX, y: offsetY }]]);
     setIsDrawing(true);
+    play();
     checkCollision(offsetX, offsetY);
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+
     if (!isDrawing || isTracingComplete) return; // Evitar trazado si ya se completó
     const { offsetX, offsetY } = e.nativeEvent;
     const newLines = [...lines];
@@ -151,16 +157,20 @@ const TracerNumbers = () => {
   const handleMouseUp = () => {
     if (isTracingComplete) return; // Evitar nuevo trazado si ya se completó
     setIsDrawing(false);
+    stop();
     setIsTracingComplete(true); // Marcar el trazado como completado
     if(isCorrectPath && path.length === 10){
+      playWinLevel();
         worlProvider.onFinish({
             summary: Math.floor((lifes / 3) * 10),
             showSummary: true
         })
     }
     if(!isCorrectPath || path.length !== 10){
+        playFailure();
         const attempt = lifes - 1
         if(attempt === 0){
+          playLoseLevel();
             modal({
                 title: "Has perdido",
                 description: "Has alcanzado el maximo de intentos posibles",

@@ -14,8 +14,8 @@
 .tracer-border {
     padding: 30px;
     box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.3);
-    background: white;
     border-color: #000;
+    background: #f4f3f6;
     border-radius: 25px;
 }
 
