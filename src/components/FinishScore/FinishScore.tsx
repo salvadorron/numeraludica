@@ -15,7 +15,6 @@ const FinishScore = () => {
     const worlProvider = useContext(WorldContext);
     const points = worlProvider.getPointList();
     const total = Math.floor(worlProvider.getSummary() / 3);  
-  console.log(points)
     return (
         <Background>
         <Flex justifyContent='center' paddingTop={24}>
@@ -36,9 +35,9 @@ const FinishScore = () => {
                     </Text>
                 </Flex>
                 <Flex direction='column' alignItems='left' justifyContent='left' alignContent='left'>
-                  {points.map((point, index) => (
+                {points.map((point, index) => (
                     <Text key={index} fontSize="xl" fontWeight='semibold'>Nivel {index + 1}: {point}</Text>                    
-                  ))}
+                ))}
                 </Flex>
                 <Flex  marginBottom={4} direction='column' justifyContent='center' alignContent='center' alignItems='center' gap={4}>
                     <Text fontSize="2xl" fontWeight='semibold'>¡Gracias por participar en Numeralúdica!</Text>
