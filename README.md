@@ -3,7 +3,7 @@
 ## Integrantes:
 - Luis Cadenas V- 28.297.040
 - Jose Garcia V- 29.858.910
-- Salvador Ron V- 26.848.109
+- Salvador Ron (Master) V- 26.848.109
 
 **Nombre:**
 
