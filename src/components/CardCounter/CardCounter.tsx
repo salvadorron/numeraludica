@@ -22,16 +22,6 @@ import './CardCounter.css'
 import fruits from '../../assets/fruits/fruits.json';
 import { PiGameControllerFill } from 'react-icons/pi';
 import { FaHandsHelping } from 'react-icons/fa';
-import useSound from 'use-sound';
-
-// Sounds
-import get from '../../assets/sounds/cards/get.mp3'
-import down from '../../assets/sounds/cards/down.mp3'
-import success from '../../assets/sounds/success.mp3'
-import failure from '../../assets/sounds/failure.mp3'
-import win_level from '../../assets/sounds/win_level.mp3'
-import lose_level from '../../assets/sounds/lose_level.mp3'
-
 
 
 const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
@@ -102,13 +92,6 @@ export default function CardCounter() {
     const [ openedHelp, setOpenedHelp ] = useState(true); 
 
     const router = useNavigate()
-
-    const [playGet] = useSound(get);
-    const [playDown] = useSound(down);
-    const [playSuccess] = useSound(success);
-    const [playFailure] = useSound(failure);
-    const [playLoseLevel] = useSound(lose_level);
-    const [playWinLevel] = useSound(win_level);
 
     const [itemList, setItemList] = useState<Fruit[]>([])
 
@@ -252,7 +235,6 @@ export default function CardCounter() {
         const nextTry = life.current - 1;
         setLife({ ...life, current: nextTry })
         if (nextTry === life.limit) {
-            playLoseLevel();
             modal({
                 title: "Has perdido",
                 description: "Has alcanzado el maximo de intentos posibles",
@@ -274,8 +256,8 @@ export default function CardCounter() {
 
 
     const handleValidate = (result: DropResult, _provided: ResponderProvided) => {
-        playDown();
-        const { source, destination } = result;
+        const { source, destination } = result
+
         if (!destination) return
         if (destination.droppableId === source.droppableId) return
         const droppableDestination = document.querySelector<HTMLDivElement>(`#destination-${destination.droppableId.replace(/droppable-destination-/g, '')}`)
@@ -289,14 +271,13 @@ export default function CardCounter() {
                 setDestinationList(arr)
                 const currentSourceList = randomSourceList.filter(currentRandomSourceListItem => currentRandomSourceListItem.name !== element.name)
                 setRandomSourceList(currentSourceList)
-                droppableDestination.classList.add("bounce_correct");
-                playSuccess();
+                droppableDestination.classList.add("bounce_correct")
                 setTimeout(() => {
                     droppableDestination.classList.remove("bounce_correct")
                 }, 1000)
                 setCorrect({ ...correct, current: nextCorrect })
+
                 if (nextCorrect === correct.limit) {
-                    playWinLevel();
                     worlProvider.onFinish({
                         summary: Math.floor((life.current / 3) * 10),
                         showSummary: true
@@ -305,8 +286,7 @@ export default function CardCounter() {
             }
         } else {
             isGetOver()
-            droppableDestination.classList.add("bounce_error");
-            playFailure();
+            droppableDestination.classList.add("bounce_error")
             setTimeout(() => {
                 droppableDestination.classList.remove("bounce_error")
             }, 1000)

@@ -20,7 +20,6 @@ import useSound from 'use-sound';
 
 // Sounds
 import get from '../../assets/sounds/abacus/get.mp3'
-import movement from '../../assets/sounds/abacus/movement.mp3'
 import failure from '../../assets/sounds/failure.mp3'
 import win_level from '../../assets/sounds/win_level.mp3'
 import lose_level from '../../assets/sounds/lose_level.mp3'
@@ -51,9 +50,6 @@ export interface AbacusProps {
 
 const Abacus = forwardRef<AbacusRef, AbacusProps>(({ color, again }, ref) => {
     const [playGetAbacus] = useSound(get);
-    const [play, { stop }] = useSound(movement, {
-      loop: true,
-    });
     const [targetNumber, setTargetNumber] = useState<number>(0);
     const [currentCount, setCurrentCount] = useState<number>(0);
     const [beadPositions, setBeadPositions] = useState<BeadPosition[]>([]);
@@ -113,10 +109,9 @@ const Abacus = forwardRef<AbacusRef, AbacusProps>(({ color, again }, ref) => {
     };
   
     const handleMouseDown = (index: number) => (event: React.MouseEvent) => {
-      playGetAbacus();
       setDraggingBead(index);
       setLastBeadDragged(index);
-      play();
+      playGetAbacus();
       // Prevent default to avoid text selection
       event.preventDefault();
     };
@@ -169,7 +164,6 @@ const Abacus = forwardRef<AbacusRef, AbacusProps>(({ color, again }, ref) => {
     };
   
     const handleMouseUp = () => {
-      stop();
       setDraggingBead(null);
     };
 

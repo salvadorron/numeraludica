@@ -20,12 +20,9 @@ import {
     Divider,
     useDisclosure
 } from '@chakra-ui/react'
-import success from '../assets/sounds/success.mp3'
-import useSound from "use-sound";
 
 export default function HomePage() {
     const colors = ["#212962", "#e5c86d", "#b4b1cc", "#a52228"]
-    const [ playSuccess ] = useSound(success);
     const [color, setColor] = useState<string>()
     const { isOpen, onOpen, onClose } = useDisclosure()
     const router = useNavigate()
@@ -41,11 +38,9 @@ export default function HomePage() {
     })
 
     const handleGame = () => {
-        playSuccess();
         setGame(true);
         onOpen();
     }
-
     return (
         <Background>
             <Stack
@@ -129,6 +124,33 @@ export default function HomePage() {
         </Background>
     )
 }
+
+
+{/* <Box w="100%">
+                    <Card borderRadius={8} boxShadow='lg'>
+                        <CardBody>
+                            <Stack spacing={8} marginBottom={8}>
+                            <Box>
+                                <Text 
+                                    bgGradient='linear(to-r, #82c8a6, #b4b1cc)'
+                                    className={styles.Montserrat}
+                                    fontSize='5xl'
+                                    bgClip='text'
+                                    fontWeight='semibold'
+                                >
+                                    ¡Bienvenido a NumeraLúdica!
+                                </Text>
+                                <Divider/>
+                            </Box>
+                            <Box>
+                                <Heading className={styles.Montserrat} size="lg" color="#b4b1cc">
+                                    ¿Qué es NumeraLúdica?
+                                </Heading>
+                            </Box>
+                            </Stack>
+                        </CardBody>
+                    </Card>
+                </Box> */}
 
 
 
